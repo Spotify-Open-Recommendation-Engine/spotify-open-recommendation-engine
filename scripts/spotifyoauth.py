@@ -11,8 +11,8 @@ def do_oauth():
     scope = "user-library-read"
 
     # Grab these two fields from the Spotify Developer Dashboard
-    client_id = "528049b217994aa9a4aff33328974235"
-    client_secret = "edfbf923c0e84e57b0b438be2ecc1fee"
+    client_id = "nope"
+    client_secret = "nope"
 
     # The redirect URL must match the value set on the Spotify Developer Dashboard
     redirect_uri = "http://localhost:8080"    
