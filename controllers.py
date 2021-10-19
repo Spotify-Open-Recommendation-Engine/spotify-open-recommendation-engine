@@ -37,10 +37,20 @@ def index():
     message = T("Hello {first_name}".format(**user) if user else "Hello")
     actions = {"allowed_actions": auth.param.allowed_actions}
     return dict(message=message, actions=actions)
+	
+@unauthenticated("recommendations", "recommendations.html")
+def index():
+    user = auth.get_user()
+    message = T("Hello {first_name}".format(**user) if user else "Hello")
+    actions = {"allowed_actions": auth.param.allowed_actions}
+    return dict(message=message, actions=actions)
 
-@action("hello")
-def hello():
-    return "hello"
+@unauthenticated("search", "search.html")
+def index():
+    user = auth.get_user()
+    message = T("Hello {first_name}".format(**user) if user else "Hello")
+    actions = {"allowed_actions": auth.param.allowed_actions}
+    return dict(message=message, actions=actions)
 
 @action("login")
 def login():
