@@ -4,70 +4,70 @@
     <base href="[[=URL('static')]]/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="data:image/x-icon;base64,AAABAAEAAQEAAAEAIAAwAAAAFgAAACgAAAABAAAAAgAAAAEAIAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAPAAAAAA=="/>
-    <link rel="stylesheet" href="css/no.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
-    <style>.py4web-validation-error{margin-top:-16px; font-size:0.8em;color:red}</style>
+    <link rel="stylesheet" href="css/bulma.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     [[block page_head]]<!-- individual pages can customize header here -->[[end]]
+    <style>
+      textarea {width:100%; min-height:120px; border-radius:5px}
+      button.clicked {pointer-events: none; background: #00d1b2;}
+      button.clicked ~ button:not(.clicked) {display: none}
+      h1 { font-size: 2em; margin: 1em 0 0.5em 0 }
+      h2 { font-size: 1.6em; margin: 0.7em 0 0.3em 0 }
+      .post { background-color: #f1f1f1; border-radius: 5px; padding: 5px; margin-bottom: 10px;}
+      .post blockquote { font-style: italic; }
+      thead tr {background-color:#f1f1f1}
+      td, th {padding: 5px; text-align: left; vertical-align:top}
+      thead th {vertical-align:bottom}
+    </style>
   </head>
-  <body>
-    <header>
-      <!-- Navigation bar -->
-      <nav class="black">
-        <!-- Logo -->
-        <a href="[[=URL('index')]]">
-          <b>py4web <script>document.write(window.location.href.split('/')[3]);</script></b>
+  <body>    
+    <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="[[=URL('index')]]">
+          <strong>Open Spotify Recommendation Engine</strong>
         </a>
-        <!-- Do not touch this -->
-        <label for="hamburger">☰</label>
-        <input type="checkbox" id="hamburger">
-        <!-- Left menu ul/li -->
-        [[block page_left_menu]][[end]]
-        <!-- Right menu ul/li -->
-        <ul>
-          [[if globals().get('user'):]]
-          <li>
-            <a class="navbar-link is-primary">
-              [[=globals().get('user',{}).get('email')]]
-            </a>
-            <ul>
-              <li><a href="[[=URL('auth/profile')]]">Edit Profile</a></li>
-              [[if 'change_password' in globals().get('actions',{}).get('allowed_actions',{}):]]
-                <li><a href="[[=URL('auth/change_password')]]">Change Password</a></li>
-              [[pass]]
-              <li><a href="[[=URL('auth/logout')]]">Logout</a></li>
-            </ul>
-          </li>
-          [[else:]]
-          <li>
-            Login
-            <ul>
-              <li><a href="[[=URL('auth/register')]]">Sign up</a></li>
-              <li><a href="[[=URL('auth/login')]]">Log in</a></li>
-            </ul>
-          </li>
-          [[pass]]
-        </ul>
-      </nav>
-    </header>
-    <!-- beginning of HTML inserted by extending template -->
-    <center>
-      <div>
-        <!-- Flash alert messages, first optional one in data-alert -->
-        <flash-alerts class="padded" data-alert="[[=globals().get('flash','')]]"></flash-alerts>
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="left-navbar"
+           onclick="this.classList.toggle('is-active');document.getElementById(this.dataset.target).classList.toggle('is-active');">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
       </div>
-      <main class="padded">
-        <!-- contect injected by extending page -->
-        [[include]]
-      </main>
-    </center>
-    <!-- end of HTML inserted by extending template -->
-    <footer class="black padded">
-      <p>
+      <div id="left-navbar" class="navbar-menu">
+        <div class="navbar-start">
+          <a class="navbar-item" href="[[=URL('index')]]">Home</a>
+          <a class="navbar-item" href="[[=URL('recommendations')]]">Recommendations</a>
+          <a class="navbar-item" href="[[=URL('search')]]">Search</a>
+        </div>
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <div class="buttons">
+              <a class="button is-primary" href="href="https://github.com/Spotify-Open-Recommendation-Engine/spotify-open-recommendation-engine">Github</a>
+              [[if globals().get('user'):]]
+              <a class="button">[[= user['username'] ]]</a>
+              <a class="button is-primary" href="[[=URL('logout')]]">Sign out</a>
+              [[else:]]
+              <a class="button is-light" href="[[=URL('login')]]">Sign in</a>
+              [[pass]]
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <section class="section">
+      <!-- beginning of HTML inserted by extending template -->
+      [[include]]
+      <!-- end of HTML inserted by extending template -->
+    </section>
+    <footer class="footer">
+      <div class="content has-text-centered">
         Made with py4web
-      </p>
+      <div class="content has-text-centered">
+		Copyright © 2021. Distributed by an MIT license.
+      </div>
     </footer>
   </body>
-  <!-- You've gotta have utils.js -->
   <script src="js/utils.js"></script>
+  <script src="js/vue.min.js"></script>
   [[block page_scripts]]<!-- individual pages can add scripts here -->[[end]]
 </html>
