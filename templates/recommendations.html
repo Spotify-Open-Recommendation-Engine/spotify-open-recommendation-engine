@@ -1,7 +1,102 @@
 [[extend 'layout.html']]
 
-<div class="section">
-  <div class="vars">
-      [[=message]]
-  </div>
+<div class="section" id="vue-target" v-cloak>
+    <section>
+		<b-field label="Tempo" horizontal>
+            <template #label>
+                <b-tooltip type="is-dark" label="Tempo Tooltip">
+					<span class="button is-static">Tempo</span>
+                </b-tooltip>
+            </template>
+			<b-slider v-model="tempo" :min="20" :max="300" :step="5" :tooltip="0" indicator size="is-large"></b-slider>
+		</b-field>
+
+        <b-field label="Key" horizontal>
+            <template #label>
+                <b-tooltip type="is-dark" label="Key Tooltip">
+					<span class="button is-static">Key</span>
+                </b-tooltip>
+            </template>
+            <b-slider v-model="key" :min="1" :max="12" :step="1" :tooltip="0" indicator size="is-large" ticks></b-slider>
+        </b-field>
+		
+        <b-field label="Popularity" horizontal>
+            <template #label>
+                <b-tooltip type="is-dark" label="Popularity Tooltip">
+					<span class="button is-static">Popularity</span>
+                </b-tooltip>
+            </template>
+            <b-slider v-model="popularity" :min="0" :max="100" :step="1" :custom-formatter="(val) => val + '%'" :tooltip="0" indicator size="is-large" ></b-slider>
+        </b-field>
+		
+        <b-field label="Acousticness" horizontal>
+            <template #label>
+                <b-tooltip type="is-dark" label="Acousticness Tooltip">
+					<span class="button is-static">Acousticness</span>
+                </b-tooltip>
+            </template>
+            <b-slider v-model="acousticness" :min="0" :max="1" :step="0.01" :custom-formatter="(val) => (val * 100).toFixed(0) + '%'" :tooltip="0" indicator size="is-large" ></b-slider>
+        </b-field>
+		
+        <b-field label="Danceability" horizontal>
+            <template #label>
+                <b-tooltip type="is-dark" label="Danceability Tooltip">
+					<span class="button is-static">Danceability</span>
+                </b-tooltip>
+            </template>
+            <b-slider v-model="danceability" :min="0" :max="1" :step="0.01" :custom-formatter="(val) => (val * 100).toFixed(0) + '%'" :tooltip="0" indicator size="is-large" ></b-slider>
+        </b-field>
+		
+        <b-field label="Energy" horizontal>
+            <template #label>
+                <b-tooltip type="is-dark" label="Energy Tooltip">
+					<span class="button is-static">Energy</span>
+                </b-tooltip>
+            </template>
+            <b-slider v-model="energy" :min="0" :max="1" :step="0.01" :custom-formatter="(val) => (val * 100).toFixed(0) + '%'" :tooltip="0" indicator size="is-large" ></b-slider>
+        </b-field>
+		
+        <b-field label="Instrumentalness" horizontal>
+            <template #label>
+                <b-tooltip type="is-dark" label="Instrumentalness Tooltip">
+					<span class="button is-static">Instrumentalness</span>
+                </b-tooltip>
+            </template>
+            <b-slider v-model="instrumentalness" :min="0" :max="1" :step="0.01" :custom-formatter="(val) => (val * 100).toFixed(0) + '%'" :tooltip="0" indicator size="is-large" ></b-slider>
+        </b-field>
+		
+        <b-field label="Liveness" horizontal>
+            <template #label>
+                <b-tooltip type="is-dark" label="Liveness Tooltip">
+					<span class="button is-static">Liveness</span>
+                </b-tooltip>
+            </template>
+            <b-slider v-model="liveness" :min="0" :max="1" :step="0.01" :custom-formatter="(val) => (val * 100).toFixed(0) + '%'" :tooltip="0" indicator size="is-large" ></b-slider>
+        </b-field>
+		
+        <b-field label="Speechiness" horizontal>
+            <template #label>
+                <b-tooltip type="is-dark" label="Speechiness Tooltip">
+					<span class="button is-static">Speechiness</span>
+                </b-tooltip>
+            </template>
+            <b-slider v-model="speechiness" :min="0" :max="1" :step="0.01" :custom-formatter="(val) => (val * 100).toFixed(0) + '%'" :tooltip="0" indicator size="is-large" ></b-slider>
+        </b-field>
+		
+        <b-field label="Valence" horizontal>
+            <template #label>
+                <b-tooltip type="is-dark" label="Valence Tooltip">
+					<span class="button is-static">Valence</span>
+                </b-tooltip>
+            </template>
+            <b-slider v-model="valence" :min="0" :max="1" :step="0.01" :custom-formatter="(val) => (val * 100).toFixed(0) + '%'" :tooltip="0" indicator size="is-large" ></b-slider>
+        </b-field>
+		<b-button type="is-primary" position="is-centered" label="Generate Playlist" expanded/>
+    </section>
 </div>
+
+[[block page_scripts]]
+<script src="js/recommendations.js"></script>
+<script src="buefy/components/field/index.js"></script>
+<script src="buefy/components/slider/index.js"></script>
+[[end]]
