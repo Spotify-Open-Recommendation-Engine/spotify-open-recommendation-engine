@@ -2,6 +2,7 @@
 spotifyoauth.py
 Functions to facilitate user login via Spotify.
 """
+import secrets
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
@@ -11,8 +12,8 @@ def do_oauth():
     scope = "user-library-read"
 
     # Grab these two fields from the Spotify Developer Dashboard
-    client_id = "nope"
-    client_secret = "nope"
+    client_id = secrets.client_id
+    client_secret = secrets.client_secret
 
     # The redirect URL must match the value set on the Spotify Developer Dashboard
     redirect_uri = "http://localhost:8080"    

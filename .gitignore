@@ -1,1 +1,4 @@
 __pycache__/
+.vscode
+scripts/.cache
+scripts/secrets.py
