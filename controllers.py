@@ -30,6 +30,8 @@ from yatl.helpers import A
 from .common import db, session, T, cache, auth, logger, authenticated, unauthenticated, flash
 from .scripts.spotifyoauth import do_oauth, do_callback, get_token
 
+import spotipy
+
 
 @unauthenticated("index", "index.html")
 @action.uses(session)
@@ -37,7 +39,14 @@ def index():
     user = auth.get_user()
     message = T("Hello {first_name}".format(**user) if user else "Hello")
     actions = {"allowed_actions": auth.param.allowed_actions}
-    token_info, valid = get_token()
+
+    session['token_info'], authorized = get_token()
+    if authorized:
+        sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
+        results = sp.current_user_saved_tracks()
+        for idx, item in enumerate(results['items']):
+            track = item['track']
+            print(idx, track['artists'][0]['name'], " – ", track['name'])
     # print(token_info)
     return dict(message=message, actions=actions)
 
