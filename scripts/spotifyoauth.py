@@ -2,7 +2,7 @@
 spotifyoauth.py
 Functions to facilitate user login via Spotify.
 """
-import secrets
+from . import secrets
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
