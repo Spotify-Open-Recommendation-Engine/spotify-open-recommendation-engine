@@ -7,9 +7,10 @@ import time
 from spotipy.oauth2 import SpotifyOAuth
 from py4web import request, redirect
 from ..common import session
+from . import secrets
 
-client_id = "redacted"
-client_secret = "redacted"
+client_id = secrets.client_id
+client_secret = secrets.client_secret
 redirect_uri = "http://localhost:8000/spotify-open-recommendation-engine/api_callback"
 scope = "user-library-read"
 

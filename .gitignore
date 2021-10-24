@@ -3,3 +3,6 @@ __pycache__/
 *.table
 *.log
 *.db
+.vscode
+scripts/.cache
+scripts/secrets.py
