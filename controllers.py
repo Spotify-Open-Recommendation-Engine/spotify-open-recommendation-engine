@@ -29,6 +29,7 @@ from py4web import action, request, abort, redirect, URL
 from yatl.helpers import A
 from .common import db, session, T, cache, auth, logger, authenticated, unauthenticated, flash
 from .scripts.spotifyoauth import do_oauth, do_callback, get_token
+from .scripts.create_playlist import create_playlist
 
 import spotipy
 
@@ -73,3 +74,8 @@ def login():
 @action.uses(session)
 def api_callback():
     return do_callback()
+
+@action("createPlaylist")
+def createPlaylist(sp, songs):
+    #songs = ['7jLYNCaTmEe1OnhYhGtfeC']
+    return create_playlist(sp, songs)
