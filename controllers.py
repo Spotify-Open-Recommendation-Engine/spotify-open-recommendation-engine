@@ -29,6 +29,9 @@ from py4web import action, request, abort, redirect, URL
 from yatl.helpers import A
 from .common import db, session, T, cache, auth, logger, authenticated, unauthenticated, flash
 from .scripts.spotifyoauth import do_oauth, do_callback, get_token
+from .scripts.create_playlist import create_playlist
+from .scripts.get_song_features import get_song_features
+from .scripts.get_recs import get_recs
 
 import spotipy
 
@@ -47,7 +50,7 @@ def index():
         for idx, item in enumerate(results['items']):
             track = item['track']
             print(idx, track['artists'][0]['name'], " – ", track['name'])
-    # print(token_info)
+        # print(token_info)
     return dict(message=message, actions=actions)
 
 @unauthenticated("recommendations", "recommendations.html")
@@ -73,3 +76,18 @@ def login():
 @action.uses(session)
 def api_callback():
     return do_callback()
+
+@action("playlist")
+@action.uses(session) 
+def playlist(songs):
+    return create_playlist(songs)
+
+@action("song_features")
+@action.uses(session)
+def song_features(tid):
+    return get_song_features(tid)
+
+@action("get_recs")
+@action.uses(session)
+def get_recs(sgenres, limit, target_attributes):
+    return get_recs(sgenres, limit, target_attributes)
