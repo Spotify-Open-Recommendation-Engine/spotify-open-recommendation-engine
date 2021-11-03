@@ -28,16 +28,28 @@ Warning: Fixtures MUST be declared with @action.uses({fixtures}) else your app w
 from py4web import action, request, abort, redirect, URL
 from yatl.helpers import A
 from .common import db, session, T, cache, auth, logger, authenticated, unauthenticated, flash
-from .scripts.spotifyoauth import do_oauth
+from .scripts.spotifyoauth import do_oauth, do_callback, get_token
+
+import spotipy
 
 
 @unauthenticated("index", "index.html")
+@action.uses(session)
 def index():
     user = auth.get_user()
     message = T("Hello {first_name}".format(**user) if user else "Hello")
     actions = {"allowed_actions": auth.param.allowed_actions}
+
+    session['token_info'], authorized = get_token()
+    if authorized:
+        sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
+        results = sp.current_user_saved_tracks()
+        for idx, item in enumerate(results['items']):
+            track = item['track']
+            print(idx, track['artists'][0]['name'], " – ", track['name'])
+    # print(token_info)
     return dict(message=message, actions=actions)
-	
+
 @unauthenticated("recommendations", "recommendations.html")
 def index():
     user = auth.get_user()
@@ -53,5 +65,11 @@ def index():
     return dict(message=message, actions=actions)
 
 @action("login")
+@action.uses(session)
 def login():
     return do_oauth()
+
+@action("api_callback")
+@action.uses(session)
+def api_callback():
+    return do_callback()
