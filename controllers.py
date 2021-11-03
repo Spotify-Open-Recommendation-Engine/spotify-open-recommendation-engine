@@ -31,6 +31,7 @@ from .common import db, session, T, cache, auth, logger, authenticated, unauthen
 from .scripts.spotifyoauth import do_oauth, do_callback, get_token
 from .scripts.get_recs import get_recs
 from .scripts.create_playlist import create_playlist
+from .scripts.search import search_for
 
 import spotipy
 
@@ -119,3 +120,7 @@ def recs():
 def validate_parameter(query, param):
     return param in query and len(query.get(param)) != 0 and query.get(param).isspace() is False
 
+@action("sp_search")
+@action.uses(session)
+def search():
+	return search_for("Smash Mouth")
