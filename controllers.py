@@ -51,6 +51,7 @@ def index():
             track = item['track']
             print(idx, track['artists'][0]['name'], " – ", track['name'])
         # print(token_info)
+    
     return dict(message=message, actions=actions)
 
 @unauthenticated("recommendations", "recommendations.html")
@@ -87,7 +88,7 @@ def playlist(songs):
 def song_features(tid):
     return get_song_features(tid)
 
-@action("get_recs")
+@action("recs")
 @action.uses(session)
-def get_recs(sgenres, limit, target_attributes):
+def recs(sgenres, limit, target_attributes):
     return get_recs(sgenres, limit, target_attributes)
