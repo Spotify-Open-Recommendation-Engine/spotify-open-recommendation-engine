@@ -123,4 +123,15 @@ def validate_parameter(query, param):
 @action("sp_search")
 @action.uses(session)
 def search():
-	return search_for("Smash Mouth")
+	q = "Smash Mouth"
+	results = search_for(q)
+	response = {}
+	print("Showing 10 results for", q, ":")
+	for idx, result in enumerate(results['tracks']['items']):
+		track_id = result['id']
+		track_name = result['name']
+		track_artist = result['artists'][0]['name']
+		track_album = result['album']['name']
+		print(idx, "- track:", track_name, " | artist:", track_artist, " | album:", track_album)
+		response.update({track_id:{"track_name":track_name, "track_artist":track_artist, "track_album":track_album}})
+	return response
