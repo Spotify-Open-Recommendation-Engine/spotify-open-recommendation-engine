@@ -18,9 +18,13 @@ def search_for(search_string):
 	if authorized:
 		sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
 
-	
-		# Return (10) tracks found via search_string
-		return sp.search(q=search_string, type='track')
-
-	return "(search_for) error: not authorized"
+		# If search_string is null or empty, return an error
+		if search_string is None or len(search_string) == 0:
+			return "(search_for) error: search_string null or empty"
+			
+		else:
+			# Return 10 tracks found via search_string
+			return sp.search(q=search_string, type='track')
+	else:
+		return "(search_for) error: not authorized"
 
