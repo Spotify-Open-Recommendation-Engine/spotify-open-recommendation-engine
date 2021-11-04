@@ -32,7 +32,8 @@ from .scripts.spotifyoauth import do_oauth, do_callback, get_token
 from .scripts.get_recs import get_recs
 from .scripts.create_playlist import create_playlist
 from .scripts.search import search_for
-
+import json
+from json import JSONDecodeError
 import spotipy
 
 
@@ -123,15 +124,44 @@ def validate_parameter(query, param):
 @action("sp_search")
 @action.uses(session)
 def search():
-	q = "Smash Mouth"
-	results = search_for(q)
-	response = {}
-	print("Showing 10 results for", q, ":")
-	for idx, result in enumerate(results['tracks']['items']):
-		track_id = result['id']
-		track_name = result['name']
-		track_artist = result['artists'][0]['name']
-		track_album = result['album']['name']
-		print(idx, "- track:", track_name, " | artist:", track_artist, " | album:", track_album)
-		response.update({track_id:{"track_name":track_name, "track_artist":track_artist, "track_album":track_album}})
-	return response
+
+	print(request.body)
+	
+	if request.body is not None:
+		
+		try:
+			body = json.load(request.body)
+			print(body)
+		except JSONDecodeError:
+			response.status = 400
+			return "(sp_search) error: could not decode request body (possibly empty?)"
+	else:
+		response.status = 400
+		return "(sp_search) error: no request body found"
+
+	if 'q' in body:
+		search_query = body['q']
+		print("search_query:", search_query)
+
+		results = search_for(search_query)
+		print(results)
+			
+		if results == "(search_for) error: not authorized":
+			response.status = 403
+			return "(sp_search) error: not authorized"
+
+		else:
+			if results is not None:
+				res = {}
+				#print("Showing 10 results for", search_query, ":")
+				for idx, result in enumerate(results['tracks']['items']):
+					track_id = result['id']
+					track_name = result['name']
+					track_artist = result['artists'][0]['name']
+					track_album = result['album']['name']
+					#print(idx, "- track:", track_name, " | artist:", track_artist, " | album:", track_album)
+					res.update({track_id:{"track_name":track_name, "track_artist":track_artist, "track_album":track_album}})
+				return res
+	else:
+		response.status = 400
+		return "(sp_search) error: search query (q) not found in request body"

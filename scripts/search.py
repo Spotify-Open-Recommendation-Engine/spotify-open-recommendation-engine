@@ -22,5 +22,5 @@ def search_for(search_string):
 		# Return (10) tracks found via search_string
 		return sp.search(q=search_string, type='track')
 
-	return "error: not authorized"
+	return "(search_for) error: not authorized"
 
