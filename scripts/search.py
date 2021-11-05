@@ -6,7 +6,6 @@ input: search_string
 output: search results from Spotify
 """
 import spotipy
-from spotipy.oauth2 import SpotifyOAuth
 from .spotifyoauth import get_token
 from ..common import session
 
