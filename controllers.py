@@ -33,7 +33,6 @@ from .scripts.get_recs import get_recs
 from .scripts.create_playlist import create_playlist
 from .scripts.search import search_for
 import json
-from json import JSONDecodeError
 import spotipy
 
 
