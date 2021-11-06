@@ -2,96 +2,116 @@
 
 <div class="section" id="vue-target" v-cloak>
     <section>
+        <b-collapse
+            class="panel"
+            animation="slide"
+            v-model="isGenresOpen">
+            <template #trigger>
+                <div
+                    class="panel-heading"
+                    role="button">
+                    <strong>Genres</strong>
+                </div>
+            </template>
+            <div v-for="valid_genre in valid_genres" class="panel-block">
+                <b-checkbox v-model="genres" :native-value="valid_genre">{{ valid_genre }}</b-checkbox>
+            </div>
+        </b-collapse>
+
 		<b-field label="Tempo" horizontal>
             <template #label>
                 <b-tooltip type="is-dark" label="Tempo Tooltip">
-					<span class="button is-static">Tempo</span>
+					<b-checkbox v-model="enabled_filters" native-value="tempo">Tempo</b-checkbox>
                 </b-tooltip>
             </template>
-			<b-slider v-model="tempo" :min="20" :max="300" :step="5" :tooltip="0" indicator size="is-large"></b-slider>
+			<b-slider v-model="filters.tempo" :min="20" :max="300" :step="5" :tooltip="0" indicator size="is-large" :disabled="!enabled_filters.includes('tempo')"></b-slider>
 		</b-field>
 
         <b-field label="Key" horizontal>
             <template #label>
                 <b-tooltip type="is-dark" label="Key Tooltip">
-					<span class="button is-static">Key</span>
+					<b-checkbox v-model="enabled_filters" native-value="Key">key</b-checkbox>
                 </b-tooltip>
             </template>
-            <b-slider v-model="key" :min="1" :max="12" :step="1" :tooltip="0" indicator size="is-large" ticks></b-slider>
+            <b-slider v-model="filters.key" :min="1" :max="12" :step="1" :tooltip="0" indicator size="is-large" ticks :disabled="!enabled_filters.includes('key')"></b-slider>
         </b-field>
 		
         <b-field label="Popularity" horizontal>
             <template #label>
                 <b-tooltip type="is-dark" label="Popularity Tooltip">
-					<span class="button is-static">Popularity</span>
+					<b-checkbox v-model="enabled_filters" native-value="popularity">Popularity</b-checkbox>
                 </b-tooltip>
             </template>
-            <b-slider v-model="popularity" :min="0" :max="100" :step="1" :custom-formatter="(val) => val + '%'" :tooltip="0" indicator size="is-large" ></b-slider>
+            <b-slider v-model="filters.popularity" :min="0" :max="100" :step="1" :custom-formatter="(val) => val + '%'" :tooltip="0" indicator size="is-large" :disabled="!enabled_filters.includes('popularity')"></b-slider>
         </b-field>
 		
         <b-field label="Acousticness" horizontal>
             <template #label>
                 <b-tooltip type="is-dark" label="Acousticness Tooltip">
-					<span class="button is-static">Acousticness</span>
+					<b-checkbox v-model="enabled_filters" native-value="acousticness">Acousticness</b-checkbox>
                 </b-tooltip>
             </template>
-            <b-slider v-model="acousticness" :min="0" :max="1" :step="0.01" :custom-formatter="(val) => (val * 100).toFixed(0) + '%'" :tooltip="0" indicator size="is-large" ></b-slider>
+            <b-slider v-model="filters.acousticness" :min="0" :max="1" :step="0.01" :custom-formatter="(val) => (val * 100).toFixed(0) + '%'" :tooltip="0" indicator size="is-large" :disabled="!enabled_filters.includes('acousticness')"></b-slider>
         </b-field>
 		
         <b-field label="Danceability" horizontal>
             <template #label>
                 <b-tooltip type="is-dark" label="Danceability Tooltip">
-					<span class="button is-static">Danceability</span>
+					<b-checkbox v-model="enabled_filters" native-value="danceability">Danceability</b-checkbox>
                 </b-tooltip>
             </template>
-            <b-slider v-model="danceability" :min="0" :max="1" :step="0.01" :custom-formatter="(val) => (val * 100).toFixed(0) + '%'" :tooltip="0" indicator size="is-large" ></b-slider>
+            <b-slider v-model="filters.danceability" :min="0" :max="1" :step="0.01" :custom-formatter="(val) => (val * 100).toFixed(0) + '%'" :tooltip="0" indicator size="is-large" :disabled="!enabled_filters.includes('danceability')"></b-slider>
         </b-field>
 		
         <b-field label="Energy" horizontal>
             <template #label>
                 <b-tooltip type="is-dark" label="Energy Tooltip">
-					<span class="button is-static">Energy</span>
+					<b-checkbox v-model="enabled_filters" native-value="energy">Energy</b-checkbox>
                 </b-tooltip>
             </template>
-            <b-slider v-model="energy" :min="0" :max="1" :step="0.01" :custom-formatter="(val) => (val * 100).toFixed(0) + '%'" :tooltip="0" indicator size="is-large" ></b-slider>
+            <b-slider v-model="filters.energy" :min="0" :max="1" :step="0.01" :custom-formatter="(val) => (val * 100).toFixed(0) + '%'" :tooltip="0" indicator size="is-large" :disabled="!enabled_filters.includes('energy')"></b-slider>
         </b-field>
 		
         <b-field label="Instrumentalness" horizontal>
             <template #label>
                 <b-tooltip type="is-dark" label="Instrumentalness Tooltip">
-					<span class="button is-static">Instrumentalness</span>
+					<b-checkbox v-model="enabled_filters" native-value="instrumentalness">Instrumentalness</b-checkbox>
                 </b-tooltip>
             </template>
-            <b-slider v-model="instrumentalness" :min="0" :max="1" :step="0.01" :custom-formatter="(val) => (val * 100).toFixed(0) + '%'" :tooltip="0" indicator size="is-large" ></b-slider>
+            <b-slider v-model="filters.instrumentalness" :min="0" :max="1" :step="0.01" :custom-formatter="(val) => (val * 100).toFixed(0) + '%'" :tooltip="0" indicator size="is-large" :disabled="!enabled_filters.includes('instrumentalness')"></b-slider>
         </b-field>
 		
         <b-field label="Liveness" horizontal>
             <template #label>
                 <b-tooltip type="is-dark" label="Liveness Tooltip">
-					<span class="button is-static">Liveness</span>
+					<b-checkbox v-model="enabled_filters" native-value="liveness">Liveness</b-checkbox>
                 </b-tooltip>
             </template>
-            <b-slider v-model="liveness" :min="0" :max="1" :step="0.01" :custom-formatter="(val) => (val * 100).toFixed(0) + '%'" :tooltip="0" indicator size="is-large" ></b-slider>
+            <b-slider v-model="filters.liveness" :min="0" :max="1" :step="0.01" :custom-formatter="(val) => (val * 100).toFixed(0) + '%'" :tooltip="0" indicator size="is-large" :disabled="!enabled_filters.includes('liveness')"></b-slider>
         </b-field>
 		
         <b-field label="Speechiness" horizontal>
             <template #label>
                 <b-tooltip type="is-dark" label="Speechiness Tooltip">
-					<span class="button is-static">Speechiness</span>
+					<b-checkbox v-model="enabled_filters" native-value="speechiness">Speechiness</b-checkbox>
                 </b-tooltip>
             </template>
-            <b-slider v-model="speechiness" :min="0" :max="1" :step="0.01" :custom-formatter="(val) => (val * 100).toFixed(0) + '%'" :tooltip="0" indicator size="is-large" ></b-slider>
+            <b-slider v-model="filters.speechiness" :min="0" :max="1" :step="0.01" :custom-formatter="(val) => (val * 100).toFixed(0) + '%'" :tooltip="0" indicator size="is-large" :disabled="!enabled_filters.includes('speechiness')"></b-slider>
         </b-field>
 		
         <b-field label="Valence" horizontal>
             <template #label>
                 <b-tooltip type="is-dark" label="Valence Tooltip">
-					<span class="button is-static">Valence</span>
+					<b-checkbox v-model="enabled_filters" native-value="valence">Valence</b-checkbox>
                 </b-tooltip>
             </template>
-            <b-slider v-model="valence" :min="0" :max="1" :step="0.01" :custom-formatter="(val) => (val * 100).toFixed(0) + '%'" :tooltip="0" indicator size="is-large" ></b-slider>
+            <b-slider v-model="filters.valence" :min="0" :max="1" :step="0.01" :custom-formatter="(val) => (val * 100).toFixed(0) + '%'" :tooltip="0" indicator size="is-large" :disabled="!enabled_filters.includes('valence')"></b-slider>
         </b-field>
-		<b-button type="is-primary" position="is-centered" label="Generate Playlist" expanded/>
+        
+        <b-field label="Song Count" horizontal>
+            <b-slider v-model="limit" :min="0" :max="50" :step="5" :tooltip="0" indicator size="is-large" ticks></b-slider>
+        </b-field>
+		<b-button v-on:click="generate" type="is-primary" position="is-centered" label="Generate Playlist" expanded/>
     </section>
 </div>
 

@@ -104,8 +104,10 @@ def recs():
             if len(param_range) != 2:
                 response.status = 400
                 return "(recs) error: invalid format for " + attribute_param + " expected 'min,max'"
-            target_attributes.update({"min_" + attribute_param: float(param_range[0]), "max_" + attribute_param: float(param_range[1])})
-            
+            if attribute_param == "tempo" or attribute_param == "key" or attribute_param == "popularity":
+                target_attributes.update({"min_" + attribute_param: int(param_range[0]), "max_" + attribute_param: int(param_range[1])})
+            else:
+                target_attributes.update({"min_" + attribute_param: float(param_range[0]), "max_" + attribute_param: float(param_range[1])})
             
     return get_recs(sgenres, limit, target_attributes)
 
