@@ -16,8 +16,9 @@ from ..common import session
 def get_recs(sgenres, limit, target_attributes):
     # get token from session
     session['token_info'],authorized = get_token()
+    print(get_token())
     if authorized:
-        sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
+        sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'), requests_timeout=30, retries=3)
         # get recommended tracks 
         recs = sp.recommendations(seed_genres=sgenres, limit=limit, country='US', **target_attributes)
 

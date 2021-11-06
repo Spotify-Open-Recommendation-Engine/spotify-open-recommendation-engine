@@ -25,12 +25,10 @@ session, db, T, auth, and tempates are examples of Fixtures.
 Warning: Fixtures MUST be declared with @action.uses({fixtures}) else your app will result in undefined behavior
 """
 
-from py4web import action, request, abort, redirect, URL
+from py4web import action, request, response, abort, redirect, URL
 from yatl.helpers import A
 from .common import db, session, T, cache, auth, logger, authenticated, unauthenticated, flash
 from .scripts.spotifyoauth import do_oauth, do_callback, get_token
-from .scripts.create_playlist import create_playlist
-from .scripts.get_song_features import get_song_features
 from .scripts.get_recs import get_recs
 
 import spotipy
@@ -90,5 +88,26 @@ def song_features(tid):
 
 @action("recs")
 @action.uses(session)
-def recs(sgenres, limit, target_attributes):
+def recs():
+    limit = 10 # default limit value
+    if validate_parameter(request.query, 'limit'):
+        limit = int(request.query.get('limit'))
+    if not validate_parameter(request.query, 'sgenres'):
+        response.status = 400
+        return "(recs) error: sgenres expected"
+    sgenres = request.query.get('sgenres').split(',')
+    attribute_params = ["tempo", "key", "popularity", "acousticness", "danceability", "energy", "instrumentalness", "liveness", "loudness", "speechiness", "valence"]
+    target_attributes = {}
+    for attribute_param in attribute_params:
+        if validate_parameter(request.query, attribute_param):
+            param_range = request.query.get(attribute_param).split(',')
+            if len(param_range) != 2:
+                response.status = 400
+                return "(recs) error: invalid format for " + attribute_param + " expected 'min,max'"
+            target_attributes.update({"min_" + attribute_param: float(param_range[0]), "max_" + attribute_param: float(param_range[1])})
+            
+            
     return get_recs(sgenres, limit, target_attributes)
+
+def validate_parameter(query, param):
+    return param in request.query and len(request.query.get(param)) != 0 and request.query.get(param).isspace() is False
