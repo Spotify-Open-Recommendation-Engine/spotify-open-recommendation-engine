@@ -30,6 +30,7 @@ from yatl.helpers import A
 from .common import db, session, T, cache, auth, logger, authenticated, unauthenticated, flash
 from .scripts.spotifyoauth import do_oauth, do_callback, get_token
 from .scripts.get_recs import get_recs
+from .scripts.create_playlist import create_playlist
 
 import spotipy
 
@@ -76,9 +77,13 @@ def login():
 def api_callback():
     return do_callback()
 
-@action("playlist")
-@action.uses(session) 
-def playlist(songs):
+@action("create_playlist")
+@action.uses(session)
+def create_playlist_req():
+    if not validate_parameter(request.query, 'songs'):
+        response.status = 400
+        return "(create_playlist) error: songs expected"
+    songs = request.query.get('songs').split(',')
     return create_playlist(songs)
 
 @action("song_features")
@@ -112,4 +117,5 @@ def recs():
     return get_recs(sgenres, limit, target_attributes)
 
 def validate_parameter(query, param):
-    return param in request.query and len(request.query.get(param)) != 0 and request.query.get(param).isspace() is False
+    return param in query and len(query.get(param)) != 0 and query.get(param).isspace() is False
+

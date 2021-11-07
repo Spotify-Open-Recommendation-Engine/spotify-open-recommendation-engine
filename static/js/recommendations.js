@@ -38,8 +38,12 @@ let init = (app) => {
 
 
     app.methods = {
+        int_to_music_key: function(val) {
+            let keys = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+            return keys[val-1];
+        },
         generate: function () {
-            let recs_endpoint = "http://localhost:8000/spotify-open-recommendation-engine/recs" //TODO(David): Remove hardcoded url
+            let recs_endpoint = document.location.origin + "/spotify-open-recommendation-engine/recs"
             let genre_string = ""
             for(const genre of this.genres) {
                 genre_string += genre + ",";
@@ -55,8 +59,12 @@ let init = (app) => {
             fetch(recs_endpoint)
             .then(response => response.json())
             .then(data => {
+                playlist_tracks = [];
                 data.tracks.forEach(element => {
-                    console.log(element.name);
+                    playlist_tracks.push(element.id);
+                });
+                fetch(document.location.origin + "/spotify-open-recommendation-engine/create_playlist?songs=" + playlist_tracks.join(",")).then(response => response.text()).then(data => {
+                    window.open("https://open.spotify.com/playlist/" + data, '_blank');
                 });
             });
         }
