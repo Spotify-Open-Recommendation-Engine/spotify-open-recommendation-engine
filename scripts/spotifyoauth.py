@@ -12,7 +12,7 @@ from . import secrets
 client_id = secrets.client_id
 client_secret = secrets.client_secret
 redirect_uri = "http://localhost:8000/spotify-open-recommendation-engine/api_callback"
-scope = "user-library-read"
+scope = "user-library-read", "playlist-modify-public"
 
 # User logs in and authorizes access
 def do_oauth():
