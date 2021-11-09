@@ -26,7 +26,8 @@ let init = (app) => {
 		    valence: [0, 1]
         },
         limit: 10,
-        isGenresOpen: false
+        is_genres_open: false,
+        not_found: false
     };
 
     app.enumerate = (a) => {
@@ -38,6 +39,9 @@ let init = (app) => {
 
 
     app.methods = {
+        filters_changed: function() {
+            app.data.not_found = false;
+        },
         int_to_music_key: function(val) {
             let keys = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
             return keys[val-1];
@@ -63,9 +67,13 @@ let init = (app) => {
                 data.tracks.forEach(element => {
                     playlist_tracks.push(element.id);
                 });
-                fetch(document.location.origin + "/spotify-open-recommendation-engine/create_playlist?songs=" + playlist_tracks.join(",")).then(response => response.text()).then(data => {
-                    window.open("https://open.spotify.com/playlist/" + data, '_blank');
-                });
+                if(playlist_tracks.length == 0) {
+                    app.data.not_found = true;
+                } else {
+                    fetch(document.location.origin + "/spotify-open-recommendation-engine/create_playlist?songs=" + playlist_tracks.join(",")).then(response => response.text()).then(data => {
+                        window.open("https://open.spotify.com/playlist/" + data, '_blank');
+                    });
+                }
             });
         }
     };
