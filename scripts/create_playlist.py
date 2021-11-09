@@ -10,7 +10,9 @@ from ..common import session
 
 def create_playlist(songs):
     #get token 
+    
     session['token_info'], authorized = get_token()
+    
     if authorized:
         sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
     

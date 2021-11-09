@@ -25,10 +25,11 @@ session, db, T, auth, and tempates are examples of Fixtures.
 Warning: Fixtures MUST be declared with @action.uses({fixtures}) else your app will result in undefined behavior
 """
 
-from py4web import action, request, abort, redirect, URL
+from py4web import action, request, response, abort, redirect, URL
 from yatl.helpers import A
 from .common import db, session, T, cache, auth, logger, authenticated, unauthenticated, flash
 from .scripts.spotifyoauth import do_oauth, do_callback, get_token
+from .scripts.get_recs import get_recs
 from .scripts.create_playlist import create_playlist
 
 import spotipy
@@ -48,7 +49,8 @@ def index():
         for idx, item in enumerate(results['items']):
             track = item['track']
             print(idx, track['artists'][0]['name'], " – ", track['name'])
-    # print(token_info)
+        # print(token_info)
+    
     return dict(message=message, actions=actions)
 
 @unauthenticated("recommendations", "recommendations.html")
@@ -75,7 +77,45 @@ def login():
 def api_callback():
     return do_callback()
 
-@action("createPlaylist")
-def createPlaylist(sp, songs):
-    #songs = ['7jLYNCaTmEe1OnhYhGtfeC']
-    return create_playlist(sp, songs)
+@action("create_playlist")
+@action.uses(session)
+def create_playlist_req():
+    if not validate_parameter(request.query, 'songs'):
+        response.status = 400
+        return "(create_playlist) error: songs expected"
+    songs = request.query.get('songs').split(',')
+    return create_playlist(songs)
+
+@action("song_features")
+@action.uses(session)
+def song_features(tid):
+    return get_song_features(tid)
+
+@action("recs")
+@action.uses(session)
+def recs():
+    limit = 10 # default limit value
+    if validate_parameter(request.query, 'limit'):
+        limit = int(request.query.get('limit'))
+    if not validate_parameter(request.query, 'sgenres'):
+        response.status = 400
+        return "(recs) error: sgenres expected"
+    sgenres = request.query.get('sgenres').split(',')
+    attribute_params = ["tempo", "key", "popularity", "acousticness", "danceability", "energy", "instrumentalness", "liveness", "loudness", "speechiness", "valence"]
+    target_attributes = {}
+    for attribute_param in attribute_params:
+        if validate_parameter(request.query, attribute_param):
+            param_range = request.query.get(attribute_param).split(',')
+            if len(param_range) != 2:
+                response.status = 400
+                return "(recs) error: invalid format for " + attribute_param + " expected 'min,max'"
+            if attribute_param == "tempo" or attribute_param == "key" or attribute_param == "popularity":
+                target_attributes.update({"min_" + attribute_param: int(param_range[0]), "max_" + attribute_param: int(param_range[1])})
+            else:
+                target_attributes.update({"min_" + attribute_param: float(param_range[0]), "max_" + attribute_param: float(param_range[1])})
+            
+    return get_recs(sgenres, limit, target_attributes)
+
+def validate_parameter(query, param):
+    return param in query and len(query.get(param)) != 0 and query.get(param).isspace() is False
+
