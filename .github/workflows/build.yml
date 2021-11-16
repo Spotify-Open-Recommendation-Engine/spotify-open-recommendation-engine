@@ -44,18 +44,28 @@ jobs:
       - name: Set up py4web
         run: |
           py4web setup apps --yes
+          ls
           cd apps
   
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout repository
         uses: actions/checkout@v2
           
-      # Build and run the app using py4web
-      - name: Build py4web app
+      # where even are we
+      - name: Change directory to same level as apps/
         run: |
+          pwd
+          ls
+          cd ..
+          pwd
+          ls 
           cd ..
           pwd
           ls
+          
+      # Build and run the app using py4web
+      - name: Build py4web app
+        run: |
           py4web run apps --watch=off &
           sleep 10
           curl http://localhost:8000/spotify-open-recommendation-engine/index
