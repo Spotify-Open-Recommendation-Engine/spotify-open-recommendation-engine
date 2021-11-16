@@ -43,7 +43,7 @@ jobs:
       # Set up py4web directory
       - name: Set up py4web
         run: |
-          python -m py4web setup apps
+          py4web setup apps
           cd apps
   
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
