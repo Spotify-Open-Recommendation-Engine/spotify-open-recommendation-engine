@@ -56,7 +56,7 @@ jobs:
           ls
           mv spotify-open-recommendation-engine/ apps/
           ls
-          touch apps/spotify-open-recommendation-engine/scripts/secrets.txt
+          touch apps/spotify-open-recommendation-engine/scripts/secrets.py
           py4web run apps --watch=off &
           sleep 10
           curl http://localhost:8000/spotify-open-recommendation-engine/index
