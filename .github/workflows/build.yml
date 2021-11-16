@@ -37,7 +37,8 @@ jobs:
       # Install dependencies
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
+          python -m pip install --upgrade pip 
+          python -m pip install spotipy
           python -m pip install --upgrade py4web --no-cache-dir --user
           
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
