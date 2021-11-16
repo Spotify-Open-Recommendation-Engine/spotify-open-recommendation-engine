@@ -44,7 +44,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       # --> /home/runner/work/spotify-open-recommendation-engine/spotify-open-recommendation-engine
       - name: Checkout repository
-        uses: actions/checkout@v2    
+        uses: actions/checkout@v2
       
       # Set up py4web apps directory
       # --> /home/runner/work/spotify-open-recommendation-engine/apps
@@ -63,5 +63,6 @@ jobs:
           py4web run apps --watch=off &
           sleep 10
           curl http://localhost:8000/spotify-open-recommendation-engine/index
+          cd spotify-open-recommendation-engine
           
           
