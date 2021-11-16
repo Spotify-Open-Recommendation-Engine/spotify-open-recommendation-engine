@@ -6,8 +6,8 @@ name: CI
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ backend/setup-ci ]
+  #push:
+  #  branches: [ backend/setup-ci ]
   pull_request:
     branches: [ main ]
 
@@ -21,7 +21,7 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         python-version: ["3.8", "3.9", "3.10"]
 
@@ -38,7 +38,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install --upgrade py4web
+          python -m pip install --upgrade py4web --no-cache-dir --user
           
       # Set up py4web directory
       - name: Set up py4web
@@ -53,7 +53,8 @@ jobs:
       # Build and run the app using py4web
       - name: Build py4web app
         run: |
+          pwd
           cd ..
-          python -m py4web run apps --watch=off &
+          py4web run apps --watch=off &
           sleep 10
           curl http://localhost:8000/spotify-open-recommendation-engine/index
