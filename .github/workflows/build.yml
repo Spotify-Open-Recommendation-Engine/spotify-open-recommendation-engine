@@ -57,7 +57,7 @@ jobs:
       # where even are we
       - name: Move spotify-open-recommendation-engine into apps/
         run: |
-          mv spotify-open-recommendation-engine/ apps/
+          mv ./spotify-open-recommendation-engine ./apps
           pwd
           ls
           
