@@ -53,8 +53,9 @@ jobs:
       # Build and run the app using py4web
       - name: Build py4web app
         run: |
-          pwd
           cd ..
+          pwd
+          ls
           py4web run apps --watch=off &
           sleep 10
           curl http://localhost:8000/spotify-open-recommendation-engine/index
