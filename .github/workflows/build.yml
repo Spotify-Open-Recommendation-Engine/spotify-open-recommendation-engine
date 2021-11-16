@@ -3,16 +3,8 @@
 
 name: CI
 
-# Controls when the workflow will run
-on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  #push:
-  #  branches: [ backend/setup-ci ]
-  pull_request:
-    branches: [ main ]
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+# Triggers the workflow on push, pull request, or manually from the Actions tab
+on: [push, pull_request, workflow_dispatch]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -45,19 +37,14 @@ jobs:
           python -m pip install --upgrade pip 
           python -m pip install spotipy
           python -m pip install --upgrade py4web --no-cache-dir --user
-          
-
       
       # Set up py4web apps directory
       # --> /home/runner/work/spotify-open-recommendation-engine/apps
       - name: Set up py4web + move spotify-open-recommendation-engine into apps/ + build app
         run: |
           cd ..
-          ls
           py4web setup apps --yes
-          ls
           mv spotify-open-recommendation-engine/ apps/
-          ls
           touch apps/spotify-open-recommendation-engine/scripts/secrets.py
           echo 'client_id = "fake_id"' >> apps/spotify-open-recommendation-engine/scripts/secrets.py
           echo 'client_secret = "fake_secret"' >> apps/spotify-open-recommendation-engine/scripts/secrets.py
@@ -65,7 +52,3 @@ jobs:
           py4web run apps --watch=off &
           sleep 10
           curl http://localhost:8000/spotify-open-recommendation-engine/index
-          cd apps/spotify-open-recommendation-engine
-          ls
-          
-          
