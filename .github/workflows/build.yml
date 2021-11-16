@@ -52,6 +52,7 @@ jobs:
           cd ..
           ls
           py4web setup apps --yes
+          ls
           
       # where even are we
       - name: Move spotify-open-recommendation-engine into apps/
