@@ -47,18 +47,13 @@ jobs:
       
       # Set up py4web apps directory
       # --> /home/runner/work/spotify-open-recommendation-engine/apps
-      - name: Set up py4web
+      - name: Set up py4web + move spotify-open-recommendation-engine into apps/
         run: |
           cd ..
           ls
           py4web setup apps --yes
           ls
-          
-      # where even are we
-      - name: Move spotify-open-recommendation-engine into apps/
-        run: |
-          mv ./spotify-open-recommendation-engine ./apps
-          pwd
+          mv spotify-open-recommendation-engine/ apps/
           ls
           
       # Build and run the app using py4web
