@@ -57,8 +57,9 @@ jobs:
           mv spotify-open-recommendation-engine/ apps/
           ls
           touch apps/spotify-open-recommendation-engine/scripts/secrets.py
-          echo 'client_id = "fake_id"' >> secrets.py
-          echo 'client_secret = "fake_secret"' >> secrets.py
+          echo 'client_id = "fake_id"' >> apps/spotify-open-recommendation-engine/scripts/secrets.py
+          echo 'client_secret = "fake_secret"' >> apps/spotify-open-recommendation-engine/scripts/secrets.py
+          cat apps/spotify-open-recommendation-engine/scripts/secrets.py
           py4web run apps --watch=off &
           sleep 10
           curl http://localhost:8000/spotify-open-recommendation-engine/index
