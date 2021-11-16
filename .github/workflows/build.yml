@@ -40,28 +40,26 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install --upgrade py4web --no-cache-dir --user
           
-      # Set up py4web directory
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # --> /home/runner/work/spotify-open-recommendation-engine/spotify-open-recommendation-engine
+      - name: Checkout repository
+        uses: actions/checkout@v2    
+      
+      # Set up py4web apps directory
+      # --> /home/runner/work/spotify-open-recommendation-engine/apps
       - name: Set up py4web
         run: |
-          py4web setup apps --yes
+          cd ..
           ls
-          cd apps
-  
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Checkout repository
-        uses: actions/checkout@v2
+          py4web setup apps --yes
           
       # where even are we
-      - name: Change directory to same level as apps/
+      - name: Move spotify-open-recommendation-engine into apps/
         run: |
-          pwd
+          cd apps
+          mv ../spotify-open-recommendation-engine/ .
           ls
           cd ..
-          pwd
-          ls 
-          cd ..
-          pwd
-          ls
           
       # Build and run the app using py4web
       - name: Build py4web app
