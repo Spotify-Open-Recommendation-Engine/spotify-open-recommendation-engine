@@ -57,10 +57,9 @@ jobs:
       # where even are we
       - name: Move spotify-open-recommendation-engine into apps/
         run: |
-          cd apps
-          mv ../spotify-open-recommendation-engine/ .
+          mv spotify-open-recommendation-engine/ apps/
+          pwd
           ls
-          cd ..
           
       # Build and run the app using py4web
       - name: Build py4web app
