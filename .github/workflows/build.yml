@@ -27,6 +27,11 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+    
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # --> /home/runner/work/spotify-open-recommendation-engine/spotify-open-recommendation-engine
+      - name: Checkout repository
+        uses: actions/checkout@v2
       
       # Set up Python
       - name: Set up Python ${{ matrix.python-version }}
@@ -41,10 +46,7 @@ jobs:
           python -m pip install spotipy
           python -m pip install --upgrade py4web --no-cache-dir --user
           
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      # --> /home/runner/work/spotify-open-recommendation-engine/spotify-open-recommendation-engine
-      - name: Checkout repository
-        uses: actions/checkout@v2
+
       
       # Set up py4web apps directory
       # --> /home/runner/work/spotify-open-recommendation-engine/apps
@@ -64,5 +66,6 @@ jobs:
           sleep 10
           curl http://localhost:8000/spotify-open-recommendation-engine/index
           cd apps/spotify-open-recommendation-engine
+          ls
           
           
