@@ -4,7 +4,7 @@
 name: CI
 
 # Triggers the workflow on push, pull request, or manually from the Actions tab
-on: [push, pull_request, workflow_dispatch]
+on: [push, workflow_dispatch]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
