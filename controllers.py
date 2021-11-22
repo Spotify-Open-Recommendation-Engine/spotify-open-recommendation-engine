@@ -96,7 +96,10 @@ def song_features(tid):
             response.status = 400
             return "(song_features) error: track id (tid) expected"
         tid = request.query.get('tid')
-    return get_song_features(tid)
+    	return get_song_features(tid)
+    else:			
+        response.status = 400 
+        return "(song_features) error: missing parameters"
 
 @action("recs")
 @action.uses(session)
