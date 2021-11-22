@@ -90,16 +90,12 @@ def create_playlist_req():
 
 @action("song_features")
 @action.uses(session)
-def song_features(tid):
-    if request.query is not None:
-        if not validate_parameter(request.query, 'tid'):
-            response.status = 400
-            return "(song_features) error: track id (tid) expected"
-        tid = request.query.get('tid')
-    	return get_song_features(tid)
-    else:			
-        response.status = 400 
-        return "(song_features) error: missing parameters"
+def song_features():
+    if not validate_parameter(request.query, 'tid'):
+        response.status = 400
+        return "(song_features) error: track id (tid) expected"
+    tid = request.query.get('tid')
+    return get_song_features(tid)
 
 @action("recs")
 @action.uses(session)
