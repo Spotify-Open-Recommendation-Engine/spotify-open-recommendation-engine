@@ -1,0 +1,62 @@
+# This is a basic workflow to help you get started with Actions.
+# (Edited for Spotify Open Recommendation Engine)
+
+name: CI
+
+# Triggers the workflow on push, pull request, or manually from the Actions tab
+on: [push, workflow_dispatch]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        python-version: ["3.8", "3.9", "3.10"]
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # --> /home/runner/work/spotify-open-recommendation-engine/spotify-open-recommendation-engine
+      - name: Checkout repository
+        uses: actions/checkout@v1
+      
+      # Set up Python
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip 
+          python -m pip install spotipy
+          python -m pip install --upgrade py4web --no-cache-dir --user
+      
+      # Set up py4web apps directory
+      # --> /home/runner/work/spotify-open-recommendation-engine/apps
+      - name: Set up py4web + move spotify-open-recommendation-engine into apps/ + build app
+        run: |
+          # Set up py4web (apps/ directory)
+          cd ..
+          py4web setup apps --yes
+          
+          # Put the cloned repo into the py4web apps/ directory
+          mv spotify-open-recommendation-engine/ apps/
+          
+          # Create the fake secrets.py file (build fails otherwise)
+          touch apps/spotify-open-recommendation-engine/scripts/secrets.py
+          echo 'client_id = "fake_id"' >> apps/spotify-open-recommendation-engine/scripts/secrets.py
+          echo 'client_secret = "fake_secret"' >> apps/spotify-open-recommendation-engine/scripts/secrets.py
+          
+          # Run the app using py4web - wait a little bit... 
+          py4web run apps --watch=off &
+          sleep 10
+          
+          # ...and see if it started up without error ( / if we can reach the index page)
+          curl http://localhost:8000/spotify-open-recommendation-engine/index
