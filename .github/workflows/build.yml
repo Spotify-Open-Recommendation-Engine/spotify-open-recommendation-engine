@@ -42,13 +42,21 @@ jobs:
       # --> /home/runner/work/spotify-open-recommendation-engine/apps
       - name: Set up py4web + move spotify-open-recommendation-engine into apps/ + build app
         run: |
+          # Set up py4web (apps/ directory)
           cd ..
           py4web setup apps --yes
+          
+          # Put the cloned repo into the py4web apps/ directory
           mv spotify-open-recommendation-engine/ apps/
+          
+          # Create the fake secrets.py file (build fails otherwise)
           touch apps/spotify-open-recommendation-engine/scripts/secrets.py
           echo 'client_id = "fake_id"' >> apps/spotify-open-recommendation-engine/scripts/secrets.py
           echo 'client_secret = "fake_secret"' >> apps/spotify-open-recommendation-engine/scripts/secrets.py
-          cat apps/spotify-open-recommendation-engine/scripts/secrets.py
+          
+          # Run the app using py4web - wait a little bit... 
           py4web run apps --watch=off &
           sleep 10
+          
+          # ...and see if it started up without error ( / if we can reach the index page)
           curl http://localhost:8000/spotify-open-recommendation-engine/index
