@@ -32,6 +32,7 @@ from .scripts.spotifyoauth import do_oauth, do_callback, get_token
 from .scripts.get_recs import get_recs
 from .scripts.create_playlist import create_playlist
 from .scripts.search import search_for
+from .scripts.get_song_features import get_song_features
 import json
 import spotipy
 
@@ -89,7 +90,11 @@ def create_playlist_req():
 
 @action("song_features")
 @action.uses(session)
-def song_features(tid):
+def song_features():
+    if not validate_parameter(request.query, 'tid'):
+        response.status = 400
+        return "(song_features) error: track id (tid) expected"
+    tid = request.query.get('tid')
     return get_song_features(tid)
 
 @action("recs")
