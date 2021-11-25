@@ -1,29 +1,54 @@
-<template>
-  <div>
+ <template>
+    <h3>{{song}}</h3>
     <h5>{{ artist }}</h5>
-    <h5>{{ album }}</h5>
-    <h5>Tempo: {{ tempo }}</h5>
-    <h5>Key: {{ key }}</h5>
-    <h5>Popularity: {{ popularity }}</h5>
-    <h5>Acousticness: {{ acustic }}</h5>
-    <h5>Dancability: {{ dance }}</h5>
-    <h5>Acousticness: {{ acusticness }}</h5>
-    <h5>Energy: {{ energy }}</h5>
-    <h5>Instrumentalness: {{ instrumentralness }}</h5>
-    <h5>Liveness: {{Liveness }}</h5>
-    <h5>Speechiness: {{ speechiness }}</h5>
-    <h5>Valences: {{ valences }}</h5>
-  </div>
+
+    <FeatureAmount 
+      feature="Tempo" 
+      :value="tempo"
+    />
+    <FeatureAmount 
+      feature="Key" 
+      :value="key"
+    />    
+    <FeatureAmount 
+      feature="Popularity" 
+      :value="popularity"
+    />
+    <FeatureAmount 
+      feature="Acousticness" 
+      :value="acustic"
+    />
+    <FeatureAmount 
+      feature="Dancability" 
+      :value="dance"
+    />
+    <FeatureAmount 
+      feature="Energy" 
+      :value="energy"
+    />
+    <FeatureAmount 
+      feature="Instrumentalness" 
+      :value="instrumentralness"
+    />
+    <FeatureAmount 
+      feature="Speechiness" 
+      :value="speechiness"
+    />
+    <FeatureAmount 
+      feature="Valences" 
+      :value="valence"
+    />
 </template>
 
 
 
 <script>
+import FeatureAmount from './FeatureAmount.vue'
 
-export default {
+export default { 
   props: {
+    song: {required: true, type: String },
     artist: { required: true, type: String },
-    ablum: { required: true, type: String },
     tempo: { required: true, type: String },
     key: { required: true, type: String },
     popularity: { required: true, type: String },
@@ -35,8 +60,12 @@ export default {
     liveness: { required: true, type: String },
     speechiness: { required: true, type: String },
     valence: { required: true, type: String },
+  },
+  name: 'song-info',
+  components: {
+    FeatureAmount
   }
+  
 };
 
 </script>
-
