@@ -30,3 +30,5 @@ def create_playlist(songs):
         sp.user_playlist_add_tracks(user_id, playlist_id = playlist_id, tracks = songs)
 
         return playlist_id
+    else:
+        return "(search_for) error: not authorized"
