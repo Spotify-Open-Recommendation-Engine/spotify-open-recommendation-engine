@@ -8,6 +8,9 @@ output: search results from Spotify
 import json
 from py4web import response
 
+def call_spotipy_search(sp, query):
+	return sp.search(q=query, type='track')
+
 # Call the Spotify API with the validated search_string
 def search_for(sp, search_string):
 
@@ -17,7 +20,7 @@ def search_for(sp, search_string):
 		
 	else:
 		# Return 10 tracks found via search_string
-		return sp.search(q=search_string, type='track')
+		return call_spotipy_search(sp, search_string)
 
 # Validate the request and call search_for()
 def validate_and_search(sp, request):
