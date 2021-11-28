@@ -4,7 +4,6 @@ Unit test the search.py script.
 """
 
 import json
-import time
 import unittest
 from py4web import request, response
 from unittest.mock import Mock, patch
@@ -27,7 +26,7 @@ class TestSearch(unittest.TestCase):
     # TEST: search_for() with valid input
     # (search_for() is in search.py)
     # Should return: 
-    @patch()
+    #@patch()
     def test_search_for_valid_input():
         return True
 

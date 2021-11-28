@@ -6,32 +6,21 @@ input: search_string
 output: search results from Spotify
 """
 import json
-import spotipy
 from py4web import response
-from .spotifyoauth import get_token
-from ..common import session
 
 # Call the Spotify API with the validated search_string
-def search_for(search_string):
+def search_for(sp, search_string):
 
-	# Get token from session
-	session['token_info'], authorized = get_token()
-
-	if authorized:
-		sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
-
-		# If search_string is null or empty, return an error
-		if search_string is None or len(search_string) == 0:
-			return "(search_for) error: search_string null or empty"
-			
-		else:
-			# Return 10 tracks found via search_string
-			return sp.search(q=search_string, type='track')
+	# If search_string is null or empty, return an error
+	if search_string is None or len(search_string) == 0:
+		return "(search_for) error: search_string null or empty"
+		
 	else:
-		return "(search_for) error: not authorized"
+		# Return 10 tracks found via search_string
+		return sp.search(q=search_string, type='track')
 
 # Validate the request and call search_for()
-def validate_and_search(request):
+def validate_and_search(sp, request):
 
 	# Make sure some query parameter is present
 	if request.query is not None:
@@ -43,7 +32,7 @@ def validate_and_search(request):
 			search_query = request.query.get('q')
 
 			# Call search_for with the query parameter
-			results = search_for(search_query)
+			results = search_for(sp, search_query)
 
 			# If the user is not authorized (session/token expired, not logged in, etc)
 			if results == "(search_for) error: not authorized":

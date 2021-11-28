@@ -112,4 +112,14 @@ def validate_parameter(query, param):
 @action("sp_search")
 @action.uses(session)
 def search():
-	return validate_and_search(request)
+    # Get token from session
+    session['token_info'], authorized = get_token()
+
+    # If the user is authorized, process the request
+    if authorized:
+	    sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
+	    return validate_and_search(sp, request)
+
+    # Otherwise, return appropriate error
+    response.status(403)
+    return "error: not authorized"
