@@ -25,9 +25,11 @@ let init = (app) => {
 		    speechiness: [0, 1],
 		    valence: [0, 1]
         },
+        recommendations: [],
         limit: 10,
-        is_genres_open: false,
-        not_found: false
+        not_found: false,
+        show_recommendation_modal: false,
+        playlist_name: '',
     };
 
     app.enumerate = (a) => {
@@ -59,22 +61,41 @@ let init = (app) => {
                 recs_endpoint += parameter + "=" + range[0] + "," + range[1] + "&";
             }
             recs_endpoint = recs_endpoint.slice(0, -1);
-            //call the endpoint
+            app.data.recommendations = [];
+            app.data.show_recommendation_modal = true;
             fetch(recs_endpoint)
             .then(response => response.json())
             .then(data => {
-                playlist_tracks = [];
-                data.tracks.forEach(element => {
-                    playlist_tracks.push(element.id);
-                });
-                if(playlist_tracks.length == 0) {
+                if(data.tracks.length == 0) {
                     app.data.not_found = true;
+                    app.data.show_recommendation_modal = false;
                 } else {
-                    fetch(document.location.origin + "/spotify-open-recommendation-engine/create_playlist?songs=" + playlist_tracks.join(",")).then(response => response.text()).then(data => {
-                        window.open("https://open.spotify.com/playlist/" + data, '_blank');
+                    app.data.recommendations = data.tracks;
+                    app.data.recommendations.forEach(element => {
+                        element.include_in_playlist = true;
                     });
+                    app.data.playlist_name = '';
                 }
             });
+        },
+        make_playlist: function() {   
+            playlist_tracks = [];
+            app.data.recommendations.forEach(element => {
+                if(element.include_in_playlist) {
+                    playlist_tracks.push(element.id);
+                }
+            });
+            if(playlist_tracks.length == 0) {
+                app.data.show_recommendation_modal = false;
+            } else {
+                playlist_name = app.data.playlist_name === '' ? 'My New Recommendations!' : app.data.playlist_name;
+                fetch(document.location.origin + "/spotify-open-recommendation-engine/create_playlist?songs=" + playlist_tracks.join(",") + "&name=" + playlist_name).then(response => response.text()).then(data => {
+                    window.open("https://open.spotify.com/playlist/" + data, '_blank');
+                });
+            }
+        },
+        open_in_spotify: function(id) {
+            window.open("https://open.spotify.com/track/" + id, '_blank');
         }
     };
 
