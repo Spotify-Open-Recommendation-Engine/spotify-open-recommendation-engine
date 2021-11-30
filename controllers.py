@@ -31,9 +31,8 @@ from .common import db, session, T, cache, auth, logger, authenticated, unauthen
 from .scripts.spotifyoauth import do_oauth, do_callback, get_token
 from .scripts.get_recs import get_recs
 from .scripts.create_playlist import create_playlist
-from .scripts.search import search_for
+from .scripts.search import validate_and_search
 from .scripts.get_song_features import get_song_features
-import json
 import spotipy
 
 
@@ -43,16 +42,6 @@ def index():
     user = auth.get_user()
     message = T("Hello {first_name}".format(**user) if user else "Hello")
     actions = {"allowed_actions": auth.param.allowed_actions}
-
-    session['token_info'], authorized = get_token()
-    if authorized:
-        sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
-        results = sp.current_user_saved_tracks()
-        for idx, item in enumerate(results['items']):
-            track = item['track']
-            print(idx, track['artists'][0]['name'], " – ", track['name'])
-        # print(token_info)
-    
     return dict(message=message, actions=actions)
 
 @unauthenticated("recommendations", "recommendations.html")
@@ -132,68 +121,14 @@ def validate_parameter(query, param):
 @action("sp_search")
 @action.uses(session)
 def search():
+    # Get token from session
+    session['token_info'], authorized = get_token()
 
-	# Make sure some query parameter is present
-	if request.query is not None:
+    # If the user is authorized, process the request
+    if authorized:
+	    sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
+	    return validate_and_search(sp, request)
 
-		# Make sure query parameter q is present (and not null, empty, or only whitespace)
-		if 'q' in request.query and len(request.query.get('q')) != 0 and request.query.get('q').isspace() is False:
-				
-			# Extract the value of query parameter q
-			search_query = request.query.get('q')
-
-			# Call search_for with the query parameter
-			results = search_for(search_query)
-
-			# If the user is not authorized (session/token expired, not logged in, etc)
-			if results == "(search_for) error: not authorized":
-
-				# Return error 403: forbidden
-				response.status = 403 
-				return "(sp_search) error: not authorized"
-
-			# If the search query was null or empty (and errored out in search_for)
-			elif results == "(search_for) error: search_string null or empty":
-
-				# Return error 400: bad request
-				response.status = 400
-				return "(sp_search) error in search_for: search query (q) null or empty"
-
-			else:
-				# Otherwise, if search_for returned some response:
-				if results is not None:
-					res = []
-				
-					# Loop through the response (JSON) and extract track id, name, artist, album
-					for idx, result in enumerate(results['tracks']['items']):
-						track_id = result['id']
-						track_name = result['name']
-						track_artist = result['artists'][0]['name']
-						track_album = result['album']['name']
-						
-						# Append to an unalphabetized list (to preserve results' rank/order)
-						res.append({
-							"track_id":track_id, 
-							"track_name":track_name, 
-							"track_artist":track_artist, 
-							"track_album":track_album
-						})
-					
-					# Turn the extracted info into a JSON object and return it
-					res_json = json.dumps(res)
-					return res_json
-				
-				# If no results were found (unlikely), say so
-				else:
-					response.status = 404
-					return "(sp_search) error: no results found for search query: ", search_query
-					
-		# If query parameter was not present, was empty, or was only whitespace, return an error
-		else:
-			response.status = 400
-			return "(sp_search) error: search query (q) null or empty"
-	
-	# If we haven't returned anything by now, return an appropriate error
-	else:			
-		response.status = 400 
-		return "(sp_search) error: no query parameters found"
+    # Otherwise, return appropriate error
+    response.status(403)
+    return "error: not authorized"
