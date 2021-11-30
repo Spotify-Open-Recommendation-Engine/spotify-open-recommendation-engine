@@ -26,7 +26,7 @@ class TestSearch(unittest.TestCase):
     # TEST: search_for() with valid input
     # Should return: valid JSON
     @patch("scripts.search.call_spotipy_search")
-    def test_1_search_for_valid_input(self, mock_search_response):
+    def test_search_01_search_for_valid_input(self, mock_search_response):
         sp = Mock()
         q = "Sleep+Token"
         # Our fake params for search_for() are valid - mock a valid JSON response from call_spotipy_search()
@@ -40,7 +40,7 @@ class TestSearch(unittest.TestCase):
     # TEST: search_for() with empty input
     # Should return: ERR_SEARCH_FOR_NULL
     # (no need to patch here, because call_spotipy_search() should NOT get called)
-    def test_2_search_for_empty_input(self):
+    def test_search_02_search_for_empty_input(self):
         sp = Mock()
         q = ""
         expected = ERR_SEARCH_FOR_NULL
@@ -50,7 +50,7 @@ class TestSearch(unittest.TestCase):
     # TEST: search_for() with whitespace input
     # Should return: ERR_SEARCH_FOR_NULL
     # (no need to patch here, because call_spotipy_search() should NOT get called)
-    def test_3_search_for_whitespace_input(self):
+    def test_search_03_search_for_whitespace_input(self):
         sp = Mock()
         q = "          "
         expected = ERR_SEARCH_FOR_NULL
@@ -60,7 +60,7 @@ class TestSearch(unittest.TestCase):
     # TEST: search_for() with no input
     # Should return: ERR_SEARCH_FOR_NULL
     # (no need to patch here, because call_spotipy_search() should NOT get called)
-    def test_4_search_for_no_input(self):
+    def test_search_04_search_for_no_input(self):
         sp = Mock()
         q = None
         expected = ERR_SEARCH_FOR_NULL
@@ -70,7 +70,7 @@ class TestSearch(unittest.TestCase):
     # TEST: validate_and_search() with valid input
     # Should return: JSON w/ properties: track_id, track_name, track_artist, track_album
     @patch("scripts.search.call_spotipy_search")
-    def test_5_validate_and_search_valid_input(self, mock_search_response):
+    def test_search_05_validate_and_search_valid_input(self, mock_search_response):
         with patch("py4web.request") as patched_request: 
                 sp = Mock()
                 # Create a query payload for our fake request
@@ -94,7 +94,7 @@ class TestSearch(unittest.TestCase):
                 
     # TEST: validate_and_search() with null request
     # Should return: ERR_VALIDATE_SEARCH_NULL
-    def test_6_validate_and_search_null_request(self):
+    def test_search_06_validate_and_search_null_request(self):
         with patch("py4web.request") as patched_request:
             sp = Mock()
             patched_request = None
@@ -104,7 +104,7 @@ class TestSearch(unittest.TestCase):
 
     # TEST: validate_and_search() with no query in request
     # Should return: ERR_VALIDATE_SEARCH_NO_QUERY
-    def test_7_validate_and_search_empty_query(self):
+    def test_search_07_validate_and_search_empty_query(self):
         with patch("py4web.request") as patched_request:
             sp = Mock()
             patched_request.query = None
@@ -114,7 +114,7 @@ class TestSearch(unittest.TestCase):
 
     # TEST: validate_and_search() with no query param 'q' in request
     # Should return: ERR_VALIDATE_SEARCH_NO_Q
-    def test_8_validate_and_search_no_q(self):
+    def test_search_08_validate_and_search_no_q(self):
         with patch("py4web.request") as patched_request:
             sp = Mock()
             patched_request.query = {"message":"these aren't the droids you're looking for"}
@@ -124,7 +124,7 @@ class TestSearch(unittest.TestCase):
 
     # TEST: validate_and_search() with empty query param 'q' in request
     # Should return: ERR_VALIDATE_SEARCH_BAD_Q
-    def test_9_validate_and_search_empty_q(self):
+    def test_search_09_validate_and_search_empty_q(self):
         with patch("py4web.request") as patched_request:
             sp = Mock()
             patched_request.query = {"q":""}
@@ -135,7 +135,7 @@ class TestSearch(unittest.TestCase):
     # TEST: validate_and_search() with error in call to search_for()
     # Should return: ERR_VALIDATE_SEARCH_SEARCH_FOR_ERR
     @patch("scripts.search.search_for")
-    def test_10_validate_and_search_search_for_err(self, mock_search_for):
+    def test_search_10_validate_and_search_search_for_err(self, mock_search_for):
         with patch("py4web.request") as patched_request:
             sp = Mock()
             patched_request.query = {"q":"something interesting"}
@@ -147,7 +147,7 @@ class TestSearch(unittest.TestCase):
     # TEST: validate_and_search() with no results
     # Should return: ERR_VALIDATE_SEARCH_NO_RESULTS
     @patch("scripts.search.search_for")
-    def test_11_validate_and_search_no_results(self, mock_search_for):
+    def test_search_11_validate_and_search_no_results(self, mock_search_for):
         with patch("py4web.request") as patched_request:
             sp = Mock()
             query_words = "a duck walked up to a lemonade stand"
