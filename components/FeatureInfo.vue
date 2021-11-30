@@ -8,7 +8,7 @@
     >
       <circle cx="0" cy="0" r="40" fill="none" stroke="#e6e6e6" stroke-width="10"/>
       <path
-        stroke="blue"
+        stroke="#8c67ef"
         stroke-width="10"
         fill="none"
         r="40"
@@ -83,7 +83,7 @@
 </script>
 
 
-<style>
+<style css="Buefy">
 
 
   .d-flex {
@@ -102,27 +102,3 @@
 </style>
 
 
-<!-- 
-  .percent {
-  pathLength: var(--ub);
-  stroke-dasharray: var(--ub);
-  stroke-dashoffset: calc( var(--ub) - var(--val));
-}
-
-
-//in circle call at top
-        :style="cssVars"
-        class="percent"
-
-
-// in circle style
-
- circle{
-    transform-origin: 50% 50%;
-  }
-
-
-    transition: stroke-dashoffset 0.35s;
-        transform: rotate(90deg);
-
--->

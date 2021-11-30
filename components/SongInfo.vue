@@ -1,50 +1,79 @@
  <template>
 
-  <div style="border-width:thick; border:solid; border-color:blue; border-radius: 15px 50px 30px 5px">
-    <ul class="flex-container">
-    <li>
-      <container>
-        <h1>{{song}}</h1>
-        <h5 style="text-align:left">by</h5>
-        <h5>{{ artist }}</h5>
-      </container>
-    </li>  
+  <div style="border-width:thick; border:solid; border-color:#8c67ef; border-radius: 15px 50px 30px 5px">
+    <ul class="flex-container"> 
     <li>
       <FeatureAmount 
         feature="Tempo" 
+        :value_text="tempo"
         :value="tempo"
+        max="200"
       />
     </li>
     <li>
       <FeatureAmount 
         feature="Key" 
-        :value="scale_key"
+        :value_text="scale_key"
+        value="100"
+        max="100"
       />
     </li>
     <li>
       <FeatureAmount 
         feature="Popularity" 
+        :value_text="popularity"
         :value="popularity"
+        max="100"
       />
     </li>
     <li>
       <FeatureAmount 
         feature="Acousticness" 
+        :value_text="acustic"
         :value="acustic"
+        max="100"
       />
     </li>
     <li>
       <FeatureAmount 
         feature="Dancability" 
+        :value_text="dance"
         :value="dance"
+        max="100"
       />
     </li>
     <li>
       <FeatureAmount 
         feature="Energy" 
+        :value_text="energy"
         :value="energy"
+        max="100"
       />
     </li>
+    <li>
+      <FeatureAmount 
+        feature="Instrumentalness" 
+        :value_text="instrumentalness"
+        :value="instrumentalness"
+        max="100"
+      />
+    </li>
+    <li>
+      <FeatureAmount 
+        feature="Speechiness" 
+        :value_text="speechiness"
+        :value="speechiness"
+        max="100"
+      />
+    </li>
+    <li>
+      <FeatureAmount 
+        feature="Valence" 
+        :value_text="valence"
+        :value="valence"
+        max="100"
+      />
+    </li>  
   </ul>
 </div>
 </template>
@@ -56,8 +85,6 @@ import FeatureAmount from './FeatureAmount.vue'
 
 export default { 
   props: {
-    song: {required: true, type: String },
-    artist: { required: true, type: String },
     tempo: { required: true, type: String },
     scale_key: { required: true, type: String },
     popularity: { required: true, type: String },
@@ -65,7 +92,7 @@ export default {
     dance: { required: true, type: String },
     acusticness: { required: true, type: String },
     energy: { required: true, type: String },
-    instrumentralness: { required: true, type: String },
+    instrumentalness: { required: true, type: String },
     liveness: { required: true, type: String },
     speechiness: { required: true, type: String },
     valence: { required: true, type: String },
