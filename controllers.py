@@ -86,7 +86,11 @@ def create_playlist_req():
         response.status = 400
         return "(create_playlist) error: songs expected"
     songs = request.query.get('songs').split(',')
-    return create_playlist(songs)
+    if not validate_parameter(request.query, 'name'):
+        response.status = 400
+        return "(create_playlist) error: name expected"
+    name = request.query.get('name')
+    return create_playlist(name, songs)
 
 @action("song_features")
 @action.uses(session)
