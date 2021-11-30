@@ -65,7 +65,7 @@ jobs:
           # (we have to do this all at once, otherwise we lose the reference to the current directory)
           cd apps/
           cd spotify-open-recommendation-engine/
-          python -m unittest
+          python -m unittest -v
           
           # See if unit tests ran successfully & exit
           retVal=$?
