@@ -40,7 +40,7 @@ jobs:
       
       # Set up py4web apps directory
       # --> /home/runner/work/spotify-open-recommendation-engine/apps
-      - name: Set up py4web + move spotify-open-recommendation-engine into apps/ + build app
+      - name: Set up py4web + move spotify-open-recommendation-engine into apps/ + build app + run unit tests
         run: |
           # Set up py4web (apps/ directory)
           cd ..
@@ -61,10 +61,8 @@ jobs:
           # ...and see if it started up without error ( / if we can reach the index page)
           curl http://localhost:8000/spotify-open-recommendation-engine/index
           
-      # Run unit tests
-      - name: Run unit tests
-        run: |
-          pwd
+          # ...then run unit tests
+          # (we have to do this all at once, otherwise we lose the reference to the current directory)
           cd apps/
           cd spotify-open-recommendation-engine/
           python -m unittest
