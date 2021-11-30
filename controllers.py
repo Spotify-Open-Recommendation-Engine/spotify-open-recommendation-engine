@@ -32,9 +32,7 @@ from .scripts.spotifyoauth import do_oauth, do_callback, get_token
 from .scripts.get_recs import get_recs
 from .scripts.create_playlist import create_playlist
 from .scripts.search import validate_and_search
-from .scripts.search import search_for
 from .scripts.get_song_features import get_song_features
-import json
 import spotipy
 
 
