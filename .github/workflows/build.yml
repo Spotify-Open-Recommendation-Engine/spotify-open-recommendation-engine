@@ -66,3 +66,10 @@ jobs:
           cd apps/
           cd spotify-open-recommendation-engine/
           python -m unittest
+          
+          # See if unit tests ran successfully & exit
+          retVal=$?
+          if [ $retVal -ne 0 ]; then
+            echo "Error: unit tests failed"
+          fi
+          exit $retVal
