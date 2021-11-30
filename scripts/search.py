@@ -92,4 +92,4 @@ def validate_and_search(sp, request):
 		# If no results were found (unlikely), say so
 		else:
 			response.status = 404
-			return ERR_VALIDATE_SEARCH_NO_RESULTS, search_query
+			return ERR_VALIDATE_SEARCH_NO_RESULTS + search_query
