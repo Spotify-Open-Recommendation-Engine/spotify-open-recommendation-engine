@@ -2,8 +2,9 @@
 test_search.py
 Unit test the search.py script.
 """
+import json
+import os
 import unittest
-from boddle import boddle
 from py4web import request, response
 from unittest.mock import Mock, patch
 from scripts.search import search_for, validate_and_search
@@ -16,6 +17,9 @@ ERR_VALIDATE_SEARCH_BAD_Q = "(validate_and_search) error: query parameter 'q' nu
 ERR_VALIDATE_SEARCH_SEARCH_FOR_ERR = "(validate_and_search) error in search_for: search query (q) null or empty"
 ERR_VALIDATE_SEARCH_NO_RESULTS = "(validate_and_search) error: no results found for search query: "
 VALID_JSON_RESPONSE = '{"message":"very cool json payload"}'
+
+JSON_FILENAME = os.path.join(os.path.dirname(__file__), 'resources/fake_search_result.json')
+JSON_MIN_FILENAME = os.path.join(os.path.dirname(__file__), 'resources/fake_search_result_min.json')
 
 class TestSearch(unittest.TestCase):
 
@@ -66,26 +70,28 @@ class TestSearch(unittest.TestCase):
     # TEST: validate_and_search() with valid input
     # Should return: JSON w/ properties: track_id, track_name, track_artist, track_album
     # Uses boddle to 
-    # @patch("scripts.search.call_spotipy_search")
-    # def test_4_validate_and_search_valid_input(self, mock_search_response):
-    #     with boddle(query={"q":"As+Tall+As+Lions"}) as r:
-    #         sp = Mock()
-    #         #r = boddle(query={'q':'As+Tall+As+Lions'})
-    #         # r.query_string = "q=Sleep+Token"
-    #         mock_search_response.return_value = VALID_JSON_RESPONSE
+    @patch("scripts.search.call_spotipy_search")
+    def test_4_validate_and_search_valid_input(self, mock_search_response):
+        with patch("py4web.request") as patched_request: 
 
-    #         print("DEBUG:")
-    #         print(r)
-    #         #print(r.query)
+                sp = Mock()
+                patched_request.query = {"q":"As+Tall+As+Lions"}
+                r = patched_request
 
-    #         expected = VALID_JSON_RESPONSE
-    #         actual = validate_and_search(sp, r)
+                fp0 = open(JSON_FILENAME)
+                fp1 = open(JSON_MIN_FILENAME)
+                JSON_RESULTS = json.load(fp0)
+                JSON_RESULTS_MIN = fp1.read()
+                fp0.close()
+                fp1.close()
 
-    #         print(actual)
+                mock_search_response.return_value = JSON_RESULTS
+                expected = JSON_RESULTS_MIN
+                actual = validate_and_search(sp, r)
 
-    #         assert mock_search_response.called
-    #         assert expected == actual
-
+                assert mock_search_response.called
+                assert expected == actual
+                
     # TEST: validate_and_search() with bad input
     # Should return: '(sp_search) error: search query (q) null or empty' (400)
     #def test_validate_and_search_bad_input():
@@ -95,4 +101,3 @@ class TestSearch(unittest.TestCase):
     # Should return: '(sp_search) error: search query (q) null or empty' (400)
     #def test_validate_and_search_no_input():
     #     return True
-

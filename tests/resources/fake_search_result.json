@@ -1,0 +1,162 @@
+{
+    "tracks": {
+      "href": "https://api.spotify.com/v1/search?query=As%2BTall%2BAs%2BLions&type=track&offset=0&limit=3",
+      "items": [
+        {
+          "album": {
+            "album_type": "album",
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/1F1IdqOCO4A9kBrQihBaOI"
+                },
+                "href": "https://api.spotify.com/v1/artists/1F1IdqOCO4A9kBrQihBaOI",
+                "id": "1F1IdqOCO4A9kBrQihBaOI",
+                "name": "As Tall As Lions",
+                "type": "artist",
+                "uri": "spotify:artist:1F1IdqOCO4A9kBrQihBaOI"
+              }
+            ],
+            "external_urls": {
+              "spotify": "https://open.spotify.com/album/1CqzN27RBDnej4WShKVl0W"
+            },
+            "href": "https://api.spotify.com/v1/albums/1CqzN27RBDnej4WShKVl0W",
+            "id": "1CqzN27RBDnej4WShKVl0W",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://i.scdn.co/image/ab67616d0000b273050c2c1a7d3f2836b4fada42",
+                "width": 640
+              },
+              {
+                "height": 300,
+                "url": "https://i.scdn.co/image/ab67616d00001e02050c2c1a7d3f2836b4fada42",
+                "width": 300
+              },
+              {
+                "height": 64,
+                "url": "https://i.scdn.co/image/ab67616d00004851050c2c1a7d3f2836b4fada42",
+                "width": 64
+              }
+            ],
+            "name": "As Tall as Lions",
+            "release_date": "2006-08-08",
+            "release_date_precision": "day",
+            "total_tracks": 10,
+            "type": "album",
+            "uri": "spotify:album:1CqzN27RBDnej4WShKVl0W"
+          },
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/1F1IdqOCO4A9kBrQihBaOI"
+              },
+              "href": "https://api.spotify.com/v1/artists/1F1IdqOCO4A9kBrQihBaOI",
+              "id": "1F1IdqOCO4A9kBrQihBaOI",
+              "name": "As Tall As Lions",
+              "type": "artist",
+              "uri": "spotify:artist:1F1IdqOCO4A9kBrQihBaOI"
+            }
+          ],
+          "disc_number": 1,
+          "duration_ms": 273080,
+          "explicit": false,
+          "external_ids": {
+            "isrc": "US72W0610213"
+          },
+          "external_urls": {
+            "spotify": "https://open.spotify.com/track/0kjENFsuwLGWkGYThzQDbJ"
+          },
+          "href": "https://api.spotify.com/v1/tracks/0kjENFsuwLGWkGYThzQDbJ",
+          "id": "0kjENFsuwLGWkGYThzQDbJ",
+          "is_local": false,
+          "name": "Love, Love, Love (Love, Love)",
+          "popularity": 38,
+          "preview_url": "https://p.scdn.co/mp3-preview/e82481e6562b3d28704dddd14628623134b9b7ea?cid=774b29d4f13844c495f206cafdad9c86",
+          "track_number": 4,
+          "type": "track",
+          "uri": "spotify:track:0kjENFsuwLGWkGYThzQDbJ"
+        },
+        {
+          "album": {
+            "album_type": "album",
+            "artists": [
+              {
+                "external_urls": {
+                  "spotify": "https://open.spotify.com/artist/1F1IdqOCO4A9kBrQihBaOI"
+                },
+                "href": "https://api.spotify.com/v1/artists/1F1IdqOCO4A9kBrQihBaOI",
+                "id": "1F1IdqOCO4A9kBrQihBaOI",
+                "name": "As Tall As Lions",
+                "type": "artist",
+                "uri": "spotify:artist:1F1IdqOCO4A9kBrQihBaOI"
+              }
+            ],
+            "external_urls": {
+              "spotify": "https://open.spotify.com/album/1CqzN27RBDnej4WShKVl0W"
+            },
+            "href": "https://api.spotify.com/v1/albums/1CqzN27RBDnej4WShKVl0W",
+            "id": "1CqzN27RBDnej4WShKVl0W",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://i.scdn.co/image/ab67616d0000b273050c2c1a7d3f2836b4fada42",
+                "width": 640
+              },
+              {
+                "height": 300,
+                "url": "https://i.scdn.co/image/ab67616d00001e02050c2c1a7d3f2836b4fada42",
+                "width": 300
+              },
+              {
+                "height": 64,
+                "url": "https://i.scdn.co/image/ab67616d00004851050c2c1a7d3f2836b4fada42",
+                "width": 64
+              }
+            ],
+            "name": "As Tall as Lions",
+            "release_date": "2006-08-08",
+            "release_date_precision": "day",
+            "total_tracks": 10,
+            "type": "album",
+            "uri": "spotify:album:1CqzN27RBDnej4WShKVl0W"
+          },
+          "artists": [
+            {
+              "external_urls": {
+                "spotify": "https://open.spotify.com/artist/1F1IdqOCO4A9kBrQihBaOI"
+              },
+              "href": "https://api.spotify.com/v1/artists/1F1IdqOCO4A9kBrQihBaOI",
+              "id": "1F1IdqOCO4A9kBrQihBaOI",
+              "name": "As Tall As Lions",
+              "type": "artist",
+              "uri": "spotify:artist:1F1IdqOCO4A9kBrQihBaOI"
+            }
+          ],
+          "disc_number": 1,
+          "duration_ms": 246986,
+          "explicit": false,
+          "external_ids": {
+            "isrc": "US72W0610214"
+          },
+          "external_urls": {
+            "spotify": "https://open.spotify.com/track/2oU7f290U8riLM0ZVqhIzG"
+          },
+          "href": "https://api.spotify.com/v1/tracks/2oU7f290U8riLM0ZVqhIzG",
+          "id": "2oU7f290U8riLM0ZVqhIzG",
+          "is_local": false,
+          "name": "Ghost of York",
+          "popularity": 35,
+          "preview_url": "https://p.scdn.co/mp3-preview/48fedbda285180c9b428313e78e98b1e4350546b?cid=774b29d4f13844c495f206cafdad9c86",
+          "track_number": 5,
+          "type": "track",
+          "uri": "spotify:track:2oU7f290U8riLM0ZVqhIzG"
+        }
+      ],
+      "limit": 3,
+      "next": "https://api.spotify.com/v1/search?query=As%2BTall%2BAs%2BLions&type=track&offset=3&limit=3",
+      "offset": 0,
+      "previous": null,
+      "total": 2
+    }
+  }
