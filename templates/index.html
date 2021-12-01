@@ -1,6 +1,25 @@
 [[extend 'layout.html']]
 
-<div class="section">
-  <div class="vars">
-  </div>
+
+<div id="slide" v-cloak>
+
+  <b-carousel>
+    <b-carousel-item v-for="(carousel, i) in carousels" :key="i">
+      <section :class="`hero is-medium is-${carousel.color}`">
+        <div class="hero-body has-text-centered">
+          <h1 class="title">{{carousel.text}}</h1>
+        </div>
+      </section>
+    </b-carousel-item>
+  </b-carousel>
+
 </div>
+
+     
+
+
+[[block page_scripts]]
+<script src="components/FeatureInfo.js"></script>
+<script src="components/SongInfo.js"></script>
+<script src="js/carousel.js"></script>
+[[end]]
