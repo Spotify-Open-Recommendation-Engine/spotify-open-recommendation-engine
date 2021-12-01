@@ -44,12 +44,14 @@ def index():
     actions = {"allowed_actions": auth.param.allowed_actions}
     return dict(message=message, actions=actions)
 
+
 @unauthenticated("recommendations", "recommendations.html")
 def index():
     user = auth.get_user()
     message = T("Hello {first_name}".format(**user) if user else "Hello")
     actions = {"allowed_actions": auth.param.allowed_actions}
     return dict(message=message, actions=actions)
+
 
 @unauthenticated("search", "search.html")
 def index():
@@ -58,15 +60,18 @@ def index():
     actions = {"allowed_actions": auth.param.allowed_actions}
     return dict(message=message, actions=actions)
 
+
 @action("login")
 @action.uses(session)
 def login():
     return do_oauth()
 
+
 @action("api_callback")
 @action.uses(session)
 def api_callback():
     return do_callback()
+
 
 @action("create_playlist")
 @action.uses(session)
@@ -81,6 +86,7 @@ def create_playlist_req():
     name = request.query.get('name')
     return create_playlist(name, songs)
 
+
 @action("song_features")
 @action.uses(session)
 def song_features():
@@ -90,33 +96,60 @@ def song_features():
     tid = request.query.get('tid')
     return get_song_features(tid)
 
+
 @action("recs")
 @action.uses(session)
 def recs():
-    limit = 10 # default limit value
+
+    # Default number of recs
+    limit = 10
+
+    # If query parameter 'limit' is valid, set the limit value to the param
     if validate_parameter(request.query, 'limit'):
         limit = int(request.query.get('limit'))
+
+    # If query parameter 'sgenres' is not valid, return error
     if not validate_parameter(request.query, 'sgenres'):
         response.status = 400
         return "(recs) error: sgenres expected"
+
+    # Otherwise, set sgenres value to it
     sgenres = request.query.get('sgenres').split(',')
-    attribute_params = ["tempo", "key", "popularity", "acousticness", "danceability", "energy", "instrumentalness", "liveness", "loudness", "speechiness", "valence"]
+
+    # A list of attribute parameters that the user can set using toggle buttons
+    attribute_params = ["tempo", "key", "popularity", "acousticness", "danceability",
+                        "energy", "instrumentalness", "liveness", "loudness", "speechiness", "valence"]
+
     target_attributes = {}
+
     for attribute_param in attribute_params:
+
+        # Check if each query attribute parameter is valid
         if validate_parameter(request.query, attribute_param):
             param_range = request.query.get(attribute_param).split(',')
+
+            # If the query attribute param doesn't contain two values (min, max), return error
             if len(param_range) != 2:
                 response.status = 400
                 return "(recs) error: invalid format for " + attribute_param + " expected 'min,max'"
+
+            # Set target attribute min/max values to the query attribute params'
             if attribute_param == "tempo" or attribute_param == "key" or attribute_param == "popularity":
-                target_attributes.update({"min_" + attribute_param: int(param_range[0]), "max_" + attribute_param: int(param_range[1])})
+                target_attributes.update(
+                    {"min_" + attribute_param: int(param_range[0]), "max_" + attribute_param: int(param_range[1])})
             else:
-                target_attributes.update({"min_" + attribute_param: float(param_range[0]), "max_" + attribute_param: float(param_range[1])})
-            
+                target_attributes.update({"min_" + attribute_param: float(
+                    param_range[0]), "max_" + attribute_param: float(param_range[1])})
+
+    # Call get_recs() with validated parameters
     return get_recs(sgenres, limit, target_attributes)
+
+# Validate that the parameter is in query and is not null or all whitespace
+
 
 def validate_parameter(query, param):
     return param in query and len(query.get(param)) != 0 and query.get(param).isspace() is False
+
 
 @action("sp_search")
 @action.uses(session)
@@ -126,8 +159,9 @@ def search():
 
     # If the user is authorized, process the request
     if authorized:
-	    sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
-	    return validate_and_search(sp, request)
+        sp = spotipy.Spotify(auth=session.get(
+            'token_info').get('access_token'))
+        return validate_and_search(sp, request)
 
     # Otherwise, return appropriate error
     response.status(403)
