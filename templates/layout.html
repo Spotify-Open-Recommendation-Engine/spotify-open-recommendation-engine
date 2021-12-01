@@ -43,8 +43,7 @@
           <div class="navbar-item">
             <div class="buttons">
               <a class="button is-primary" href="href="https://github.com/Spotify-Open-Recommendation-Engine/spotify-open-recommendation-engine">Github</a>
-              [[if globals().get('user'):]]
-              <a class="button">[[= user['username'] ]]</a>
+              [[if authorized:]]
               <a class="button is-primary" href="[[=URL('logout')]]">Sign out</a>
               [[else:]]
               <a class="button is-light" href="[[=URL('login')]]">Sign in</a>

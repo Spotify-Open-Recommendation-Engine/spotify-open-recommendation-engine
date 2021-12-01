@@ -39,29 +39,29 @@ import spotipy
 @unauthenticated("index", "index.html")
 @action.uses(session)
 def index():
-    user = auth.get_user()
-    message = T("Hello {first_name}".format(**user) if user else "Hello")
-    actions = {"allowed_actions": auth.param.allowed_actions}
-    return dict(message=message, actions=actions)
+    session['token_info'],authorized = get_token()
+    return dict(authorized=authorized)
 
 @unauthenticated("recommendations", "recommendations.html")
-def index():
-    user = auth.get_user()
-    message = T("Hello {first_name}".format(**user) if user else "Hello")
-    actions = {"allowed_actions": auth.param.allowed_actions}
-    return dict(message=message, actions=actions)
-
 @unauthenticated("search", "search.html")
-def index():
-    user = auth.get_user()
-    message = T("Hello {first_name}".format(**user) if user else "Hello")
-    actions = {"allowed_actions": auth.param.allowed_actions}
-    return dict(message=message, actions=actions)
+@action.uses(session)
+def require_login():
+    session['token_info'],authorized = get_token()
+    if not authorized:
+        return redirect(URL('login'))
+    return dict(authorized=authorized)
+
 
 @action("login")
 @action.uses(session)
 def login():
     return do_oauth()
+
+@action("logout")
+@action.uses(session)
+def logout():
+    session.clear()
+    return redirect(URL('index'))
 
 @action("api_callback")
 @action.uses(session)
