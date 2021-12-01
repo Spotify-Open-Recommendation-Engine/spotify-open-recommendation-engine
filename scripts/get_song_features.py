@@ -21,14 +21,17 @@ def get_song_features(tid):
 
         #dictionary to hold seed info of audio features
         song_features={}
+        song_features["acousticness"] = features[0]['acousticness']
         song_features["danceability"] = features[0]['danceability']
         song_features["energy"] = features[0]['energy']
+        song_features["liveness"] = features[0]['liveness']
+        song_features["tempo"] = features[0]['tempo']
         song_features["key"] = features[0]['key']
         song_features["loudness"] = features[0]['loudness']
         song_features["mode"] = features[0]['mode']
         song_features["speechiness"] = features[0]['speechiness']
         song_features["instrumentalness"] = features[0]['instrumentalness']
-        song_features["valence"] = features[0]['tempo']
+        song_features["valence"] = features[0]['valence']
 
         #get track info
         track_name = sp.track(tid)

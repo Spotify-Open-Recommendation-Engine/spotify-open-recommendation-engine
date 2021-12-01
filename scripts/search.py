@@ -76,13 +76,15 @@ def validate_and_search(sp, request):
 				track_name = result['name']
 				track_artist = result['artists'][0]['name']
 				track_album = result['album']['name']
+				album_art = result['album']['images'][0]['url']
 						
 				# Append to an unalphabetized list (to preserve results' rank/order)
 				res.append({
 					"track_id":track_id, 
 					"track_name":track_name, 
 					"track_artist":track_artist, 
-					"track_album":track_album
+					"track_album":track_album,
+					"album_art":album_art
 				})
 					
 			# Turn the extracted info into a JSON object and return it

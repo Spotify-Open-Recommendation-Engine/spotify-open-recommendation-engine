@@ -31,7 +31,7 @@
 	    				<b-checkbox v-on:input="filters_changed" v-model="enabled_filters" native-value="key">Key</b-checkbox>
                     </b-tooltip>
                 </template>
-                <b-slider v-on:change="filters_changed" v-model="filters.key" :min="1" :max="12" :step="1" :custom-formatter="int_to_music_key" :tooltip="0" indicator size="is-large" ticks :disabled="!enabled_filters.includes('key')"></b-slider>
+                <b-slider v-on:change="filters_changed" v-model="filters.key" :min="0" :max="11" :step="1" :custom-formatter="int_to_music_key" :tooltip="0" indicator size="is-large" ticks :disabled="!enabled_filters.includes('key')"></b-slider>
             </b-field>
         
             <b-field class="mx-6" label="Popularity" horizontal>
@@ -183,6 +183,4 @@
 
 [[block page_scripts]]
 <script src="js/recommendations.js"></script>
-<script src="buefy/components/field/index.js"></script>
-<script src="buefy/components/slider/index.js"></script>
 [[end]]

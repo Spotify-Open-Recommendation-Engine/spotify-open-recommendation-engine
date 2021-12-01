@@ -1,7 +1,65 @@
 [[extend 'layout.html']]
 
-<div class="section">
-  <div class="vars">
-      [[=message]]
-  </div>
+<div id="vue-target" v-cloak>
+    <section>
+        <div class="panel mx-6 my-6">
+            <div class="panel-heading">
+                <strong>Search</strong>
+            </div>
+            <b-field message="Search for characteristics of songs you like to refine your filters!" class="mx-4 my-4">
+                <b-input placeholder="Search..." type="search" v-model="search_query" expanded :loading="loading_search">
+                </b-input>
+                <p class="control">
+                    <b-button type="is-primary" label="Search" v-on:click="search"/>
+                </p>
+            </b-field>
+            <div class="panel-block" v-if="results.length != 0" v-for="result in results">
+                <div class="media-left">
+                    <figure class="image is-128x128">
+                        <img :src="result.album_art" alt="Image" style="border-radius: 15px;">
+                    </figure>
+                </div>
+                <div class="media-content">
+                    <p class="title is-4">{{result.track_name}}</p>
+                    <p class="subtitle is-6">{{result.track_artist}}</p>
+                    <song-info :v-if="result.has_features" :tempo="result.features.tempo.toFixed(0)" :scale_key="int_to_music_key(result.features.key)"
+                          :popularity="result.features.popularity" :dance="format_percent(result.features.danceability)"
+                          :acousticness="format_percent(result.features.acousticness)" :energy="format_percent(result.features.energy)"
+                          :liveness="format_percent(result.features.liveness)" :instrumentalness="format_percent(result.features.instrumentalness)"
+                          :speechiness="format_percent(result.features.speechiness)" :valence="format_percent(result.features.valence)"></song-info>
+                    <b-skeleton :height="result.has_features ? '0' : '150px'" active></b-skeleton>
+                </div>
+                
+                <div class="media-right">
+                    <b-tooltip type="is-dark" label="Open in Spotify">
+                        <b-button type="is-success" v-on:click="open_in_spotify(result.track_id)">
+                            <b-image src="icons/spotify.png"></b-image>
+                        </b-button>
+                    </b-tooltip>
+                </div>
+            </div>
+            <article class="media mx-4" v-for="i in 10" v-if="loading_search">
+                <figure class="media-left">
+                    <p class="image">
+                        <b-skeleton circle width="50px" height="50px"></b-skeleton>
+                    </p>
+                </figure>
+                <div class="media-content">
+                    <span class="content">
+                        <p>
+                            <b-skeleton active></b-skeleton>
+                            <b-skeleton active></b-skeleton>
+                        </p>
+                        
+                    </div>
+                </div>
+            </article>
+        </div>
+      </section>
 </div>
+
+[[block page_scripts]]
+<script src="components/FeatureInfo.js"></script>
+<script src="components/SongInfo.js"></script>
+<script src="js/search.js"></script>
+[[end]]

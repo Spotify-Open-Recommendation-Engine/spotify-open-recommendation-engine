@@ -46,7 +46,7 @@ let init = (app) => {
         },
         int_to_music_key: function(val) {
             let keys = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-            return keys[val-1];
+            return keys[val];
         },
         generate: function () {
             let recs_endpoint = document.location.origin + "/spotify-open-recommendation-engine/recs"
@@ -107,10 +107,7 @@ let init = (app) => {
     });
 
     // And this initializes it.
-    app.init = () => {
-        // Put here any initialization code.
-        // Typically this is a server GET call to load the data.
-    };
+    app.init = () => { };
 
     app.init();
 };
